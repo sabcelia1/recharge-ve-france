@@ -55,15 +55,19 @@ def nettoyer_communes() -> pd.DataFrame:
     log("communes", "lignes", f"{len(df):,}")
     log("communes", "population manquante", int(df["population"].isna().sum()))
     df["population"] = df["population"].astype("Int64")
-    if not {"codesPostaux", "centre"} <= set(df.columns):
+    if not {"codesPostaux", "centre", "departement", "region"} <= set(df.columns):
         raise SystemExit("communes.json est incomplet : supprimez data/raw/communes.json "
                          "puis relancez src/ingest.py")
     # centre = point GeoJSON {"type": "Point", "coordinates": [lon, lat]}
     coords = df["centre"].map(lambda c: c["coordinates"] if isinstance(c, dict) else [None, None])
     df["centre_lon"] = coords.str[0].astype(float)
     df["centre_lat"] = coords.str[1].astype(float)
-    return df[["code_insee", "nom_commune", "code_departement", "code_region",
-               "population", "codesPostaux", "centre_lon", "centre_lat"]]
+    # departement / region = objets {"code": ..., "nom": ...}
+    for niveau in ("departement", "region"):
+        df[f"nom_{niveau}"] = df[niveau].map(lambda d: d.get("nom") if isinstance(d, dict) else None)
+    return df[["code_insee", "nom_commune", "code_departement", "nom_departement",
+               "code_region", "nom_region", "population", "codesPostaux",
+               "centre_lon", "centre_lat"]]
 
 
 def vers_xyz(lon, lat) -> np.ndarray:
@@ -229,6 +233,27 @@ def nettoyer_vehicules(codes_valides: set[str]) -> pd.DataFrame:
     return df
 
 
+# --- Export ------------------------------------------------------------------------
+COLONNES_BOOLEENNES = ["prise_type_combo_ccs", "prise_type_2", "gratuit"]
+VRAI_FAUX = {"true": True, "false": False, "1": True, "0": False, "oui": True, "non": False}
+
+
+def preparer_pour_bigquery(df: pd.DataFrame) -> pd.DataFrame:
+    """Types explicites pour que BigQuery détecte un schéma propre à l'import :
+    DATE (et non TIMESTAMP), BOOLEAN (et non STRING), STRING pour les catégories."""
+    df = df.copy()
+    for col in df.columns:
+        if pd.api.types.is_datetime64_any_dtype(df[col]):
+            df[col] = df[col].dt.date
+        elif isinstance(df[col].dtype, pd.CategoricalDtype):
+            df[col] = df[col].astype("string")
+    for col in COLONNES_BOOLEENNES:
+        if col in df.columns:
+            df[col] = (df[col].astype("string").str.strip().str.lower()
+                       .map(VRAI_FAUX).astype("boolean"))
+    return df
+
+
 # --- Rapport -----------------------------------------------------------------------
 def ecrire_rapport() -> None:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -259,9 +284,9 @@ def main() -> int:
     vehicules = nettoyer_vehicules(codes)
     communes = communes.drop(columns=["codesPostaux"])
 
-    communes.to_parquet(PROCESSED_DIR / "communes.parquet", index=False)
-    irve.to_parquet(PROCESSED_DIR / "points_recharge.parquet", index=False)
-    vehicules.to_parquet(PROCESSED_DIR / "vehicules.parquet", index=False)
+    for nom, table in [("communes", communes), ("points_recharge", irve),
+                       ("vehicules", vehicules)]:
+        preparer_pour_bigquery(table).to_parquet(PROCESSED_DIR / f"{nom}.parquet", index=False)
     ecrire_rapport()
     print(f"\nTerminé : tables dans {PROCESSED_DIR}, rapport dans reports/qualite_donnees.md")
     return 0

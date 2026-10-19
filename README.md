@@ -2,7 +2,7 @@
 
 > Analyse de l'adéquation entre le parc de voitures électriques et l'infrastructure de recharge publique, à l'échelle des communes et des départements français.
 
-**Statut :** 🚧 en cours — semaine 1/4 (ingestion et nettoyage)
+**Statut :** 🚧 en cours — semaine 2/4 (modèle en étoile BigQuery)
 
 ---
 
@@ -33,7 +33,7 @@ Ce projet identifie les **territoires sous-équipés**, où le nombre de véhicu
  [2] src/clean.py    ── nettoyage + contrôles qualité ──►  data/processed/*.parquet
         │                                                   reports/qualite_donnees.md
         ▼
- [3] BigQuery        ── modèle en étoile (SQL)                       (semaine 2)
+ [3] BigQuery        ── sql/*.sql : modèle en étoile + vues KPI ──►  dataset mart
         │
         ▼
  [4] Power BI + Looker Studio  ── dashboards                         (semaine 3)
@@ -49,7 +49,8 @@ Ce projet identifie les **territoires sous-équipés**, où le nombre de véhicu
 
 ## 🧹 Qualité des données
 
-Le nettoyage applique des règles explicites, chacune tracée dans [`reports/qualite_donnees.md`](reports/qualite_donnees.md) :
+Le nettoyage applique des règles explicites, chacune chiffrée dans [`reports/qualite_donnees.md`](reports/qualite_donnees.md). Résultat clé : **99,96 % des 170 624 points de recharge rattachés à une commune**, dont 26 % récupérés grâce à leurs coordonnées GPS car leur code commune était vide.
+
 
 - **Doublons** : suppression sur l'identifiant unique du point de recharge (`id_pdc_itinerance`).
 - **Unités** : puissances saisies en watts au lieu de kilowatts détectées et converties.
@@ -59,10 +60,28 @@ Le nettoyage applique des règles explicites, chacune tracée dans [`reports/qua
 - **Cohérence** : exclusion des lignes où le nombre de véhicules électriques dépasse le parc total.
 - **Traçabilité** : un manifeste (`data/raw/manifest.json`) date chaque téléchargement.
 
+## 🗄️ Modèle de données
+
+Modèle en étoile dans BigQuery (scripts dans [`sql/`](sql/), détail dans [`docs/modele_donnees.md`](docs/modele_donnees.md)) :
+
+```mermaid
+erDiagram
+    dim_commune ||--o{ fct_point_recharge : code_insee
+    dim_commune ||--o{ fct_parc_vehicules : code_insee
+    dim_date ||--o{ fct_point_recharge : date_mise_en_service
+    dim_date ||--o{ fct_parc_vehicules : date_arrete
+    dim_palier_puissance ||--o{ fct_point_recharge : palier_puissance
+```
+
+- **`fct_point_recharge`** — 1 ligne par point de recharge public (≈ 170 000)
+- **`fct_parc_vehicules`** — 1 ligne par commune et par trimestre (stock semi-additif : jamais sommé entre trimestres)
+- **Vues d'analyse** — `v_tension_departement`, `v_tension_commune`, `v_evolution_trimestrielle`, consommées par les dashboards
+
 ## ⚠️ Limites connues
 
 - Le rattachement par coordonnées GPS utilise le centre de la commune la plus proche : près d'une limite communale, un point peut être attribué à la commune voisine. L'effet est négligeable à la maille départementale.
 - Les véhicules sont rattachés à l'**adresse d'immatriculation**. Les flottes d'entreprise et de loueurs gonflent artificiellement certaines communes (sièges sociaux, zones aéroportuaires). L'analyse au niveau **départemental** atténue ce biais.
+- Environ **49 % des points n'ont pas de date de mise en service**. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et sous-estime donc le niveau (la tendance reste exploitable).
 - La base IRVE ne couvre que la **recharge ouverte au public**, pas la recharge à domicile ou en entreprise.
 - La base IRVE consolidée est en version **bêta** et dépend des déclarations des aménageurs.
 
@@ -84,16 +103,18 @@ python src/clean.py                # tables propres + rapport qualité
 jupyter notebook notebooks/01_exploration.ipynb
 ```
 
+**BigQuery :** suivre [`docs/guide_bigquery.md`](docs/guide_bigquery.md) (import des 3 fichiers Parquet puis exécution des scripts `sql/` dans l'ordre).
+
 ## 🗺️ Feuille de route
 
 - [x] **Semaine 1** — Ingestion, nettoyage, rapport qualité, exploration
-- [ ] **Semaine 2** — Chargement BigQuery, modèle en étoile, requêtes SQL
+- [x] **Semaine 2** — Modèle en étoile BigQuery, vues d'analyse SQL
 - [ ] **Semaine 3** — Dashboard Power BI (.pbip) et version Looker Studio
 - [ ] **Semaine 4** — Conclusions, captures, publication
 
 ## 🛠️ Stack
 
-Python (pandas, requests) · SQL · Google BigQuery · Power BI (DAX, Power Query) · Looker Studio
+Python (pandas, scipy, requests) · SQL · Google BigQuery · Power BI (DAX, Power Query) · Looker Studio
 
 ---
 
