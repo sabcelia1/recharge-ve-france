@@ -31,9 +31,9 @@ SOURCES = {
         "description": "Référentiel des communes avec population (API Découpage "
                        "administratif, geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/communes"
-               "?fields=nom,code,codeDepartement,codeRegion,population,codesPostaux,centre&format=json",
+               "?fields=nom,code,codeDepartement,codeRegion,population,codesPostaux,centre,departement,region&format=json",
         # Champs indispensables : si le fichier local ne les contient pas, il est retéléchargé.
-        "champs_requis": ['"codesPostaux"', '"centre"'],
+        "champs_requis": ['"codesPostaux"', '"centre"', '"departement"'],
         "page": "https://geo.api.gouv.fr/decoupage-administratif",
         "filename": "communes.json",
     },
