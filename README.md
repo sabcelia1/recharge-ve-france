@@ -73,7 +73,7 @@ Le nettoyage applique des règles explicites, chacune tracée dans [`reports/qua
 **Manuellement :**
 
 ```bash
-git clone https://github.com/<sabcelia1>/recharge-ve-france.git
+git clone https://github.com/sabcelia1/recharge-ve-france.git
 cd recharge-ve-france
 python -m venv .venv
 source .venv/bin/activate          # Windows : .venv\Scripts\activate
@@ -97,4 +97,4 @@ Python (pandas, requests) · SQL · Google BigQuery · Power BI (DAX, Power Quer
 
 ---
 
-👤 **Célia Monga** — Ingénieure Data & IA · [LinkedIn](https://www.linkedin.com/in/https://www.linkedin.com/in/c%C3%A9lia-monga-a48b48242/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BQybdXsyHQN276n%2Bd0%2BQ0zQ%3D%3D>)
+👤 **Célia Monga** — Ingénieure Data & IA · [LinkedIn](https://www.linkedin.com/in/c%C3%A9lia-monga-a48b48242/)
