@@ -1,0 +1,27 @@
+# Données (trop volumineuses pour Git : elles se régénèrent avec src/ingest.py)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Identifiants cloud (ne jamais publier !)
+*.json.key
+credentials*.json
+service-account*.json
+.env
+
+# Power BI : on versionne le format .pbip, pas le .pbix ni le cache
+*.pbix
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+
+# Système
+.DS_Store
+Thumbs.db
