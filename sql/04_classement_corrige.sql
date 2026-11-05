@@ -5,7 +5,7 @@
 --
 -- Corrige les deux biais identifiés dans docs/journal_analyse.md :
 --   H3 — outre-mer : couverture probablement incomplète de la base IRVE
---        -> départements d'outre-mer (codes 97x) exclus de ce classement
+--        -> outre-mer (codes 97x et 98x) exclu de ce classement
 --   H4 — flottes d'entreprise : véhicules immatriculés au siège, pas sur place
 --        -> communes avec plus de 2 voitures par habitant exclues
 --           (leurs véhicules, leurs bornes et leur population)
@@ -15,7 +15,9 @@ CREATE OR REPLACE VIEW mart.v_tension_departement_corrigee AS
 WITH communes_retenues AS (
   SELECT *
   FROM mart.v_tension_commune
-  WHERE NOT STARTS_WITH(code_departement, '97')        -- métropole uniquement
+  -- Métropole uniquement : exclut les DROM (971 à 976) et les collectivités
+  -- d'outre-mer (975, 977, 978, 986 à 988, ex. Nouvelle-Calédonie = 988)
+  WHERE NOT (STARTS_WITH(code_departement, '97') OR STARTS_WITH(code_departement, '98'))
 ),
 departements AS (
   SELECT
