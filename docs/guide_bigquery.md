@@ -54,6 +54,7 @@ Cliquez sur **+** (nouvel onglet de requête). Pour chaque fichier du dossier `s
 | 1 | `sql/01_dimensions.sql` | `dim_commune`, `dim_date`, `dim_palier_puissance` |
 | 2 | `sql/02_faits.sql` | `fct_point_recharge`, `fct_parc_vehicules` |
 | 3 | `sql/03_analyses.sql` | `v_tension_departement`, `v_tension_commune`, `v_evolution_trimestrielle` |
+| 4 | `sql/04_classement_corrige.sql` | `v_tension_departement_corrigee` (métropole, hors flottes) |
 
 ## 5. Vérifier
 
