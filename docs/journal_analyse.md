@@ -15,7 +15,8 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | H3 | Le classement de l'outre-mer reflète une sous-déclaration des bornes, pas un réel sous-équipement | 🔍 à vérifier |
 | H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
 | H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | ✅ partiellement validée (Haute-Loire oui ; Aisne et Haute-Corse non) |
-| H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | 🔍 à vérifier |
+| H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | ✅ partiellement validée (immatriculations concentrées dans les communes d'affaires) |
+| H8 | Certaines communes résidentielles des Hauts-de-Seine (Colombes, Antony) sont réellement sous-équipées | 🔍 à vérifier |
 | H7 | Aisne et Haute-Corse sortent du top 10 à cause d'une commune « flotte » (ex. loueurs près d'un aéroport) | ✅ validée (Villers-Cotterêts, Lucciana) |
 
 ---
@@ -194,6 +195,49 @@ Requête sur `mart.v_tension_departement_corrigee` :
 - **Impact :** négligeable sur les résultats (moins de 100 VE au total), mais c'est un défaut de méthode.
 - **Décision :** le critère devient « **plus de 2 voitures par habitant ET au moins 1 000 voitures immatriculées** » (`sql/03_analyses.sql`). Tox (1 536 voitures pour 96 habitants) reste signalée, les autres petits villages ne le sont plus.
 
+### Résultat du test H6 (Hauts-de-Seine, 15 communes ayant le plus de VE)
+
+Après application du nouveau seuil, seules Rueil-Malmaison et Clichy restent signalées comme flottes dans le département. Calculs à partir de `v_tension_commune` :
+
+| Commune | Voitures par habitant | Part de VE dans le parc | Points pour 10 000 hab. | VE par point |
+|---|---:|---:|---:|---:|
+| Rueil-Malmaison *(flotte)* | 3,18 | 6,8 % | 32,7 | 65,9 |
+| Courbevoie | 1,36 | 15,3 % | 32,6 | 63,9 |
+| Boulogne-Billancourt | 0,94 | 11,9 % | 28,2 | 39,4 |
+| Issy-les-Moulineaux | 0,90 | **20,9 %** | 36,9 | 51,0 |
+| Nanterre | 1,11 | 10,8 % | 16,1 | 74,4 |
+| Clichy *(flotte)* | 2,49 | 6,0 % | 6,1 | 248,3 |
+| Puteaux | 1,65 | 12,9 % | 128,6 | 16,6 |
+| Levallois-Perret | 0,81 | 11,0 % | 54,5 | 16,4 |
+| Neuilly-sur-Seine | 0,88 | 11,4 % | 102,3 | 9,7 |
+| Gennevilliers | 0,95 | 8,9 % | 28,6 | 29,7 |
+| Châtenay-Malabry | 0,88 | 12,2 % | 15,4 | 69,7 |
+| Antony | 0,81 | 5,6 % | **7,9** | 57,1 |
+| Meudon | 0,78 | 7,5 % | 17,3 | 34,3 |
+| Colombes | 0,68 | 4,2 % | **5,9** | 48,8 |
+| Asnières-sur-Seine | 0,60 | 4,4 % | 13,4 | 19,5 |
+
+**Lecture :**
+
+- **Deux profils de communes se dégagent.** Les communes résidentielles (Colombes, Asnières, Antony) ont une part de VE de **4 à 6 %**. Les communes de quartiers d'affaires (Issy-les-Moulineaux, Courbevoie, Puteaux, Boulogne-Billancourt, Nanterre) atteignent **11 à 21 %**, avec souvent plus d'une voiture par habitant.
+- **Interprétation :** ces écarts sont cohérents avec des véhicules de société immatriculés à l'adresse des entreprises, sans atteindre le seuil de 2 voitures par habitant. Les données ne permettent pas de le prouver formellement : il n'y a pas de distinction particulier / entreprise à la maille communale.
+- **H6 partiellement validée :** le nombre de VE « locaux » des Hauts-de-Seine est vraisemblablement surestimé par des flottes diffuses. Le premier rang du département dans le classement corrigé n'est donc pas fiable.
+- **Les deux communes signalées comme flottes ont une faible part de VE (6 à 7 %)**, à l'inverse des communes d'affaires. Ce sont probablement deux types de flottes différents (loueurs et parcs anciens d'un côté, véhicules de société récents de l'autre). C'est une hypothèse, non testée.
+
+### 📌 Décision : deux indicateurs complémentaires, et non un seul
+
+- **Constat :** le nombre de VE par point dépend des immatriculations, que l'on ne peut pas entièrement corriger des flottes avec ces données.
+- **Décision :** le dashboard présentera **deux indicateurs côte à côte** :
+  - **VE par point de recharge** : mesure la tension, mais reste sensible aux flottes (avertissement affiché) ;
+  - **Points de recharge pour 10 000 habitants** : mesure l'équipement rapporté à la population résidente, **indépendant des immatriculations** et donc insensible aux flottes.
+- **Ajout au modèle :** colonnes `part_ve_dans_parc` et `voitures_par_habitant` dans `v_tension_commune`, pour visualiser ces profils dans le dashboard.
+
+### H8 — Communes résidentielles réellement sous-équipées 🔍
+
+- **Observation :** **Colombes** (91 000 habitants, 54 points, **5,9 points pour 10 000 habitants**) et **Antony** (64 000 habitants, 51 points, **7,9**) ont une densité de bornes très inférieure à leurs voisines, par exemple Neuilly-sur-Seine (102) ou Puteaux (129). Ce sont des communes résidentielles, peu concernées par le biais des flottes.
+- **Hypothèse :** ce sont de vrais déserts relatifs de recharge publique en zone dense, où beaucoup d'habitants n'ont pas de place de parking privée pour recharger chez eux.
+- **Test prévu :** classer toutes les communes de plus de 30 000 habitants selon les points pour 10 000 habitants, et vérifier si ce profil se retrouve ailleurs en Île-de-France et en France.
+
 ---
 
 ## Prochaines étapes
@@ -202,5 +246,6 @@ Requête sur `mart.v_tension_departement_corrigee` :
 2. ~~Créer une vue de classement corrigé~~ ✅ fait (`v_tension_departement_corrigee`).
 3. ~~Consigner le top 10 corrigé et vérifier H5~~ ✅ fait.
 4. ~~Tester H7~~ ✅ fait, seuil de détection affiné.
-5. Tester H6 sur les Hauts-de-Seine : rechercher des flottes sous le seuil de 2 voitures par habitant.
-6. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
+5. ~~Tester H6~~ ✅ fait : décision de présenter deux indicateurs complémentaires.
+6. Tester H8 (grandes communes les moins équipées par habitant).
+7. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
