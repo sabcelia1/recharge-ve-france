@@ -102,8 +102,11 @@ SELECT
   COALESCE(pt.nb_points_rapides, 0)                         AS nb_points_rapides,
   SAFE_DIVIDE(pa.nb_ve, pt.nb_points)                       AS ve_par_point,
   SAFE_DIVIDE(pt.nb_points, c.population) * 10000           AS points_pour_10k_hab,
-  -- Signal des communes probablement gonflées par des flottes
-  SAFE_DIVIDE(pa.nb_vp, c.population) > 2                   AS suspicion_flotte
+  -- Signal des communes probablement gonflées par des flottes :
+  -- plus de 2 voitures par habitant ET au moins 1 000 voitures immatriculées
+  -- (le seuil de volume évite de signaler de petits villages, cf. journal H7)
+  SAFE_DIVIDE(pa.nb_vp, c.population) > 2
+    AND COALESCE(pa.nb_vp, 0) >= 1000                       AS suspicion_flotte
 FROM mart.dim_commune AS c
 LEFT JOIN parc   AS pa USING (code_insee)
 LEFT JOIN points AS pt USING (code_insee);
