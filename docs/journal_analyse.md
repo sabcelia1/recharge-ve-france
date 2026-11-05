@@ -16,7 +16,7 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
 | H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | ✅ partiellement validée (Haute-Loire oui ; Aisne et Haute-Corse non) |
 | H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | 🔍 à vérifier |
-| H7 | Aisne et Haute-Corse sortent du top 10 à cause d'une commune « flotte » (ex. loueurs près d'un aéroport) | 🔍 à vérifier |
+| H7 | Aisne et Haute-Corse sortent du top 10 à cause d'une commune « flotte » (ex. loueurs près d'un aéroport) | ✅ validée (Villers-Cotterêts, Lucciana) |
 
 ---
 
@@ -173,6 +173,27 @@ Requête sur `mart.v_tension_departement_corrigee` :
   ORDER BY nom_departement, nb_ve DESC;
   ```
 
+**Résultat du test H7 :**
+
+| Département | Commune | Population | Voitures immatriculées | dont VE | Voitures par habitant |
+|---|---|---:|---:|---:|---:|
+| Aisne | Villers-Cotterêts | 10 489 | 53 315 | 11 318 | 5,1 |
+| Haute-Corse | Lucciana | 6 923 | 34 273 | 8 198 | 5,0 |
+| Haute-Corse | Tox | 96 | 1 536 | 81 | 16,0 |
+| Haute-Corse | Tallone, Morsiglia, Campi, Muro, Piobetta | 19 à 288 | 40 à 585 | 0 à 23 | 2,0 à 2,1 |
+| Hauts-de-Seine | Rueil-Malmaison | 82 874 | 263 209 | 17 850 | 3,2 |
+| Hauts-de-Seine | Clichy | 64 410 | 160 451 | 9 685 | 2,5 |
+| Hauts-de-Seine | Vaucresson | 8 432 | 26 691 | 1 629 | 3,2 |
+
+- **H7 validée.** Deux communes concentrent à elles seules l'essentiel du biais : **Villers-Cotterêts** (5 voitures par habitant, 11 318 VE pour 10 489 habitants) dans l'Aisne, et **Lucciana** (5 voitures par habitant), commune de l'aéroport de Bastia, en Haute-Corse. Ces volumes ne peuvent pas correspondre aux seuls résidents : ce sont des immatriculations de flottes ou de loueurs.
+- **Dans les Hauts-de-Seine**, Rueil-Malmaison compte à elle seule 263 209 voitures immatriculées pour 82 874 habitants.
+
+### 📌 Affinage du seuil de détection des flottes
+
+- **Constat :** le seuil « plus de 2 voitures par habitant » signale aussi **de très petits villages corses** (19 à 288 habitants, 0 à 23 VE). Sur de si petites populations, le ratio est instable : quelques résidents secondaires suffisent à le faire dépasser 2. Ce ne sont pas des flottes.
+- **Impact :** négligeable sur les résultats (moins de 100 VE au total), mais c'est un défaut de méthode.
+- **Décision :** le critère devient « **plus de 2 voitures par habitant ET au moins 1 000 voitures immatriculées** » (`sql/03_analyses.sql`). Tox (1 536 voitures pour 96 habitants) reste signalée, les autres petits villages ne le sont plus.
+
 ---
 
 ## Prochaines étapes
@@ -180,5 +201,6 @@ Requête sur `mart.v_tension_departement_corrigee` :
 1. ~~Exécuter le test H4~~ ✅ fait.
 2. ~~Créer une vue de classement corrigé~~ ✅ fait (`v_tension_departement_corrigee`).
 3. ~~Consigner le top 10 corrigé et vérifier H5~~ ✅ fait.
-4. Tester H7 (identifier les communes exclues), puis H6 sur les Hauts-de-Seine.
-5. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
+4. ~~Tester H7~~ ✅ fait, seuil de détection affiné.
+5. Tester H6 sur les Hauts-de-Seine : rechercher des flottes sous le seuil de 2 voitures par habitant.
+6. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
