@@ -241,9 +241,9 @@ Après application du nouveau seuil, seules Rueil-Malmaison et Clichy restent si
 
 ### Résultat du test H8 (communes de plus de 30 000 habitants, hors flottes)
 
-**Anomalie détectée au passage :** les deux premières lignes étaient **Nouméa et Dumbéa (Nouvelle-Calédonie)**, avec une part de VE vide. Leur code département commence par `98`, et non `97` : le filtre « métropole » ne les excluait pas. La Nouvelle-Calédonie n'est d'ailleurs pas couverte par les données d'immatriculation. 📌 **Correction :** le filtre exclut désormais les codes `97x` **et** `98x` (`sql/04_classement_corrige.sql`). Effet nul sur le classement corrigé (sans VE, ces communes étaient en bas de classement), mais le filtre est maintenant juste.
+**Anomalie détectée au passage :** les deux premières lignes étaient **Nouméa et Dumbéa (Nouvelle-Calédonie)**, avec une part de VE vide. Leur code département commence par `98`, et non `97` : le filtre « métropole » ne les excluait pas. La Nouvelle-Calédonie n'est d'ailleurs pas couverte par les données d'immatriculation. 📌 **Correction :** le filtre exclut désormais les codes `97x` **et** `98x` (`sql/04_classement_corrige.sql`). Effet nul sur le classement corrigé (sans VE, ces communes étaient en bas de classement), mais le filtre est maintenant juste. La requête relancée avec ce filtre ne renvoie plus que des communes métropolitaines.
 
-Les 13 communes métropolitaines les moins équipées :
+Les 15 communes métropolitaines les moins équipées (requête relancée avec le filtre corrigé) :
 
 | Commune | Département | Population | Points | Points pour 10 000 hab. | Part de VE |
 |---|---|---:|---:|---:|---:|
@@ -260,12 +260,14 @@ Les 13 communes métropolitaines les moins équipées :
 | Vigneux-sur-Seine | Essonne | 31 466 | 18 | 5,7 | 2,2 % |
 | Épinay-sur-Seine | Seine-Saint-Denis | 52 833 | 31 | 5,9 | 1,6 % |
 | Colombes | Hauts-de-Seine | 91 053 | 54 | 5,9 | 4,2 % |
+| Saint-Denis | Seine-Saint-Denis | 149 077 | 90 | 6,0 | 4,1 % |
+| Clamart | Hauts-de-Seine | 58 576 | 36 | 6,1 | 5,3 % |
 
 À titre de comparaison : Neuilly-sur-Seine compte 102 points pour 10 000 habitants, et Puteaux 129.
 
 **Lecture :**
 
-- **H8 validée, et elle dépasse les Hauts-de-Seine.** **10 des 13 communes** sont en Île-de-France, surtout dans le Val-de-Marne, la Seine-Saint-Denis, le Val-d'Oise et l'Essonne. Vitry-sur-Seine compte **20 points de recharge pour près de 94 000 habitants**, soit 50 fois moins par habitant que Puteaux.
+- **H8 validée, et elle dépasse les Hauts-de-Seine.** **12 des 15 communes** sont en Île-de-France, surtout dans le Val-de-Marne, la Seine-Saint-Denis, le Val-d'Oise et l'Essonne. Vitry-sur-Seine compte **20 points de recharge pour près de 94 000 habitants**, soit 50 fois moins par habitant que Puteaux.
 - **Ces communes ont aussi une très faible part de VE (1,2 à 4,8 %).** Leur ratio « VE par point » n'est donc pas alarmant : c'est précisément pourquoi elles n'apparaissaient pas dans les classements par tension. Le manque de bornes y est **une barrière à l'adoption à venir**, plus qu'une saturation actuelle.
 - **C'est le résultat principal du projet :** les vrais déserts de recharge publique ne sont pas les départements en tête du classement brut, mais de **grandes communes de banlieue**, denses, où beaucoup d'habitants vivent en logement collectif et ne peuvent probablement pas recharger chez eux.
 
