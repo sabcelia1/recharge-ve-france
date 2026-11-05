@@ -98,6 +98,8 @@ SELECT
   c.population,
   COALESCE(pa.nb_ve, 0)                                     AS nb_ve,
   pa.nb_vp,
+  SAFE_DIVIDE(pa.nb_ve, pa.nb_vp)                           AS part_ve_dans_parc,
+  SAFE_DIVIDE(pa.nb_vp, c.population)                       AS voitures_par_habitant,
   COALESCE(pt.nb_points, 0)                                 AS nb_points,
   COALESCE(pt.nb_points_rapides, 0)                         AS nb_points_rapides,
   SAFE_DIVIDE(pa.nb_ve, pt.nb_points)                       AS ve_par_point,
