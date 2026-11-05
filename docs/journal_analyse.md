@@ -14,8 +14,9 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | H2 | Ces bornes ont un code commune vide, mais des coordonnées GPS exploitables | ✅ validée (26,4 % récupérés) |
 | H3 | Le classement de l'outre-mer reflète une sous-déclaration des bornes, pas un réel sous-équipement | 🔍 à vérifier |
 | H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
-| H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | 🔍 à vérifier |
+| H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | ✅ partiellement validée (Haute-Loire oui ; Aisne et Haute-Corse non) |
 | H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | 🔍 à vérifier |
+| H7 | Aisne et Haute-Corse sortent du top 10 à cause d'une commune « flotte » (ex. loueurs près d'un aéroport) | 🔍 à vérifier |
 
 ---
 
@@ -134,12 +135,50 @@ Requête sur `mart.v_tension_departement`, dernier trimestre disponible du parc 
   - (b) la tension est réelle : département dense, fort taux d'équipement en VE, et recharge surtout privée (parkings d'immeubles et d'entreprises) non comptée dans la base des bornes publiques.
 - **Test prévu :** lister les communes du département avec leur nombre de voitures par habitant et leur part de VE, et regarder si quelques communes concentrent une part anormale des VE.
 
+### Classement corrigé (métropole, hors communes à suspicion de flotte)
+
+Requête sur `mart.v_tension_departement_corrigee` :
+
+| Rang | Département | Communes exclues | VE | Points | VE par point | Part de recharge rapide |
+|---|---|---:|---:|---:|---:|---:|
+| 1 | Hauts-de-Seine | 3 | 118 188 | 4 373 | 27,0 | 6,7 % |
+| 2 | Haute-Loire | 1 | 6 942 | 337 | 20,6 | 15,4 % |
+| 3 | Essonne | 1 | 58 060 | 2 855 | 20,3 | 24,9 % |
+| 4 | Haut-Rhin | 1 | 35 594 | 1 763 | 20,2 | 29,0 % |
+| 5 | Mayenne | 0 | 10 375 | 521 | 19,9 | 21,3 % |
+| 6 | Val-d'Oise | 1 | 42 608 | 2 144 | 19,9 | 25,4 % |
+| 7 | Yvelines | 3 | 68 037 | 3 451 | 19,7 | 19,7 % |
+| 8 | Bouches-du-Rhône | 2 | 100 432 | 5 179 | 19,4 | 21,1 % |
+| 9 | Var | 2 | 52 587 | 2 735 | 19,2 | 16,4 % |
+| 10 | Isère | 1 | 55 314 | 2 888 | 19,2 | 25,2 % |
+
+**Lecture :**
+
+- **Les écarts se resserrent fortement.** Le classement brut allait de 20 à 178 VE par point ; une fois les biais retirés, le top 10 tient entre 19 et 27. Le premier « classement des départements sous-équipés » était donc surtout un classement des **biais de données**.
+- **H5 partiellement validée.** La **Haute-Loire** reste 2ᵉ : c'est un vrai signal. La **Mayenne** apparaît au 5ᵉ rang **sans aucune commune exclue**, ce qui en fait le signal le plus « propre » du classement. En revanche, **l'Aisne et la Haute-Corse sortent du top 10** : leur position venait aussi d'une commune à suspicion de flotte (hypothèse H7).
+- **Hauts-de-Seine : cas à part.** Il reste 1ᵉʳ avec 27 VE par point, et surtout la **plus faible part de recharge rapide du top 10 (6,7 %)**, quatre fois moins que le Haut-Rhin (29 %). Cela nourrit la piste (b) de H6 : un réseau public dense en ville mais composé de bornes lentes, avec une recharge qui se fait surtout en privé.
+- **Nouvel angle :** puisque le nombre de VE par point varie peu après correction, **la part de recharge rapide** devient un indicateur discriminant pour le dashboard (de 6,7 % à 29 % dans ce seul top 10).
+
+### H7 — Aisne et Haute-Corse : une commune « flotte » 🔍
+
+- **Observation :** ces deux départements sortent du top 10 après correction, avec 1 commune exclue chacun (Haute-Corse : rang 6 brut à hors top 10).
+- **Piste :** en Haute-Corse, la presse spécialisée cite **Lucciana**, commune de l'aéroport de Bastia, comme ayant plus de voitures immatriculées que d'habitants, du fait des loueurs ([Tesla Mag](https://www.tesla-mag.com/voitures-electriques-par-commune-carte-france/)).
+- **Test prévu :** lister les communes exclues et vérifier qu'elles correspondent bien à des sièges de flottes ou de loueurs :
+
+  ```sql
+  SELECT nom_departement, nom_commune, population, nb_vp, nb_ve,
+         ROUND(SAFE_DIVIDE(nb_vp, population), 1) AS voitures_par_habitant
+  FROM mart.v_tension_commune
+  WHERE suspicion_flotte AND code_departement IN ('02', '2B', '92')
+  ORDER BY nom_departement, nb_ve DESC;
+  ```
+
 ---
 
 ## Prochaines étapes
 
 1. ~~Exécuter le test H4~~ ✅ fait.
 2. ~~Créer une vue de classement corrigé~~ ✅ fait (`v_tension_departement_corrigee`).
-3. Consigner le nouveau top 10 corrigé et vérifier H5 (les départements ruraux restent-ils en tête ?).
-4. Tester H6 sur les Hauts-de-Seine.
+3. ~~Consigner le top 10 corrigé et vérifier H5~~ ✅ fait.
+4. Tester H7 (identifier les communes exclues), puis H6 sur les Hauts-de-Seine.
 5. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
