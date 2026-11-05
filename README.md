@@ -2,7 +2,7 @@
 
 > Analyse de l'adéquation entre le parc de voitures électriques et l'infrastructure de recharge publique, à l'échelle des communes et des départements français.
 
-**Statut :** 🚧 en cours — semaine 2/4 (modèle en étoile BigQuery)
+**Statut :** 🚧 en cours — semaine 3/4 (dashboard Power BI)
 
 ---
 
@@ -81,7 +81,11 @@ erDiagram
 
 Les hypothèses formulées, les tests effectués (y compris les pistes rejetées) et les décisions prises sont consignés dans le [**journal d'analyse**](docs/journal_analyse.md).
 
-Premier constat : le classement brut des départements mélange trois phénomènes, une sous-déclaration probable des bornes en outre-mer, un biais lié aux flottes d'entreprise en Île-de-France et un vrai sous-équipement de certains territoires ruraux. Il doit être corrigé avant d'être interprété.
+**Principaux résultats :**
+
+1. **Le classement brut des départements mesurait surtout des biais de données.** Sous-déclaration probable des bornes en outre-mer, et véhicules de flottes immatriculés au siège des entreprises (à Villers-Cotterêts, 11 318 VE pour 10 489 habitants). Une fois ces biais corrigés, les écarts entre départements passent de 20–178 à 19–27 VE par point.
+2. **Le nombre de VE par point ne suffit pas.** Il dépend des immatriculations, que les flottes faussent. Le projet l'associe donc à un indicateur indépendant des immatriculations : les points de recharge pour 10 000 habitants.
+3. **Les vrais déserts de recharge publique sont de grandes communes de banlieue.** Vitry-sur-Seine compte 20 points pour 94 000 habitants, 50 fois moins par habitant que Puteaux. Ces communes, surtout franciliennes, ont aussi une faible part de VE : le manque de bornes y freine probablement l'adoption à venir.
 
 ## ⚠️ Limites connues
 
