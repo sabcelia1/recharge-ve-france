@@ -77,6 +77,12 @@ erDiagram
 - **`fct_parc_vehicules`** — 1 ligne par commune et par trimestre (stock semi-additif : jamais sommé entre trimestres)
 - **Vues d'analyse** — `v_tension_departement`, `v_tension_commune`, `v_evolution_trimestrielle`, consommées par les dashboards
 
+## 🔎 Démarche d'analyse
+
+Les hypothèses formulées, les tests effectués (y compris les pistes rejetées) et les décisions prises sont consignés dans le [**journal d'analyse**](docs/journal_analyse.md).
+
+Premier constat : le classement brut des départements mélange trois phénomènes, une sous-déclaration probable des bornes en outre-mer, un biais lié aux flottes d'entreprise en Île-de-France et un vrai sous-équipement de certains territoires ruraux. Il doit être corrigé avant d'être interprété.
+
 ## ⚠️ Limites connues
 
 - Le rattachement par coordonnées GPS utilise le centre de la commune la plus proche : près d'une limite communale, un point peut être attribué à la commune voisine. L'effet est négligeable à la maille départementale.
