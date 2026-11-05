@@ -76,3 +76,4 @@ erDiagram
 | `v_tension_departement` | KPI par département : VE par point, points pour 10 000 habitants, part de recharge rapide, classement |
 | `v_tension_commune` | Zoom commune, avec un indicateur `suspicion_flotte` (plus de 2 voitures par habitant) |
 | `v_evolution_trimestrielle` | Dynamique nationale du parc VE et des points datés |
+| `v_tension_departement_corrigee` | Classement corrigé : métropole uniquement, communes à suspicion de flotte exclues (`sql/04_classement_corrige.sql`) |

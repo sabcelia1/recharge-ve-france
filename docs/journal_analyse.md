@@ -13,8 +13,9 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | H1 | Les bornes non rattachées à une commune ont un code postal saisi à la place du code INSEE | ❌ rejetée (0,9 % seulement) |
 | H2 | Ces bornes ont un code commune vide, mais des coordonnées GPS exploitables | ✅ validée (26,4 % récupérés) |
 | H3 | Le classement de l'outre-mer reflète une sous-déclaration des bornes, pas un réel sous-équipement | 🔍 à vérifier |
-| H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | 🔍 à vérifier |
+| H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
 | H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | 🔍 à vérifier |
+| H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | 🔍 à vérifier |
 
 ---
 
@@ -105,7 +106,19 @@ Requête sur `mart.v_tension_departement`, dernier trimestre disponible du parc 
   ```
 
 - **Critère de validation :** si une part importante des VE d'un département provient de quelques communes suspectes, l'hypothèse est confirmée et ces communes seront exclues d'un classement « corrigé ».
-- **Résultat :** _à compléter._
+- **Résultat :**
+
+  | Département | Communes suspectes | Part des VE dans ces communes | VE par point, brut | VE par point, hors communes suspectes* |
+  |---|---:|---:|---:|---:|
+  | Yvelines | 3 | **42 %** (50 171 / 118 208) | 32,7 | ≈ 18,8 |
+  | Seine-Saint-Denis | 2 | **34 %** (18 888 / 56 325) | 25,4 | ≈ 16,9 |
+  | Hauts-de-Seine | 3 | 20 % (29 164 / 147 352) | 31,3 | ≈ 25,1 |
+  | Val-d'Oise | 1 | 16 % (7 922 / 50 530) | 21,3 | ≈ 17,9 |
+
+  \* Estimation rapide : les VE des communes suspectes sont retirés, mais leurs bornes restent comptées. Le calcul exact est fait par la vue `v_tension_departement_corrigee`.
+
+- **Conclusion :** hypothèse **partiellement validée**. Dans les Yvelines, 42 % des véhicules électriques sont immatriculés dans seulement 3 communes : le biais est massif et le classement brut est trompeur. En revanche, les **Hauts-de-Seine restent élevés après correction** (≈ 25 VE par point), d'où une nouvelle hypothèse H6.
+- **📌 Décision :** création de la vue `v_tension_departement_corrigee` (`sql/04_classement_corrige.sql`), qui exclut les communes à suspicion de flotte (véhicules, bornes et population) et les départements d'outre-mer (H3). Elle indique pour chaque département combien de communes et de VE ont été exclus, pour que la correction reste transparente.
 
 ### H5 — Départements ruraux : vrai signal de sous-équipement 🔍
 
@@ -113,10 +126,20 @@ Requête sur `mart.v_tension_departement`, dernier trimestre disponible du parc 
 - **Hypothèse :** ce sont de vrais territoires où l'infrastructure publique ne suit pas l'adoption des véhicules électriques. C'est le résultat que le projet cherche à mettre en évidence.
 - **Test prévu :** une fois les corrections H3 et H4 appliquées, vérifier que ces départements restent en tête du classement « métropole, hors flottes ». Compléter avec la part de recharge rapide (> 50 kW), plus critique en zone rurale où les distances sont longues.
 
+### H6 — Hauts-de-Seine : flottes sous le seuil de détection 🔍
+
+- **Observation :** après exclusion des 3 communes suspectes, les Hauts-de-Seine gardent environ 25 VE par point, nettement au-dessus des autres départements franciliens corrigés.
+- **Hypothèses concurrentes :**
+  - (a) des sièges de flottes sont situés dans des communes très peuplées, où le ratio reste sous le seuil de 2 voitures par habitant et échappe donc à la détection ;
+  - (b) la tension est réelle : département dense, fort taux d'équipement en VE, et recharge surtout privée (parkings d'immeubles et d'entreprises) non comptée dans la base des bornes publiques.
+- **Test prévu :** lister les communes du département avec leur nombre de voitures par habitant et leur part de VE, et regarder si quelques communes concentrent une part anormale des VE.
+
 ---
 
 ## Prochaines étapes
 
-1. Exécuter le test H4 et consigner le résultat ci-dessus.
-2. Créer une vue de classement corrigé : métropole uniquement, communes à suspicion de flotte exclues.
-3. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
+1. ~~Exécuter le test H4~~ ✅ fait.
+2. ~~Créer une vue de classement corrigé~~ ✅ fait (`v_tension_departement_corrigee`).
+3. Consigner le nouveau top 10 corrigé et vérifier H5 (les départements ruraux restent-ils en tête ?).
+4. Tester H6 sur les Hauts-de-Seine.
+5. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
