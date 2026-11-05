@@ -16,7 +16,8 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
 | H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | ✅ partiellement validée (Haute-Loire oui ; Aisne et Haute-Corse non) |
 | H6 | La tension résiduelle des Hauts-de-Seine vient de flottes non détectées par le seuil de 2 voitures par habitant | ✅ partiellement validée (immatriculations concentrées dans les communes d'affaires) |
-| H8 | Certaines communes résidentielles des Hauts-de-Seine (Colombes, Antony) sont réellement sous-équipées | 🔍 à vérifier |
+| H8 | Certaines communes résidentielles des Hauts-de-Seine (Colombes, Antony) sont réellement sous-équipées | ✅ validée, et le phénomène dépasse les Hauts-de-Seine |
+| H9 | La faible densité de bornes va de pair avec une faible adoption des VE, liée au profil des communes (revenus, type de logement) | 🔍 à vérifier (données externes nécessaires) |
 | H7 | Aisne et Haute-Corse sortent du top 10 à cause d'une commune « flotte » (ex. loueurs près d'un aéroport) | ✅ validée (Villers-Cotterêts, Lucciana) |
 
 ---
@@ -238,6 +239,42 @@ Après application du nouveau seuil, seules Rueil-Malmaison et Clichy restent si
 - **Hypothèse :** ce sont de vrais déserts relatifs de recharge publique en zone dense, où beaucoup d'habitants n'ont pas de place de parking privée pour recharger chez eux.
 - **Test prévu :** classer toutes les communes de plus de 30 000 habitants selon les points pour 10 000 habitants, et vérifier si ce profil se retrouve ailleurs en Île-de-France et en France.
 
+### Résultat du test H8 (communes de plus de 30 000 habitants, hors flottes)
+
+**Anomalie détectée au passage :** les deux premières lignes étaient **Nouméa et Dumbéa (Nouvelle-Calédonie)**, avec une part de VE vide. Leur code département commence par `98`, et non `97` : le filtre « métropole » ne les excluait pas. La Nouvelle-Calédonie n'est d'ailleurs pas couverte par les données d'immatriculation. 📌 **Correction :** le filtre exclut désormais les codes `97x` **et** `98x` (`sql/04_classement_corrige.sql`). Effet nul sur le classement corrigé (sans VE, ces communes étaient en bas de classement), mais le filtre est maintenant juste.
+
+Les 13 communes métropolitaines les moins équipées :
+
+| Commune | Département | Population | Points | Points pour 10 000 hab. | Part de VE |
+|---|---|---:|---:|---:|---:|
+| Vitry-sur-Seine | Val-de-Marne | 93 963 | 20 | **2,1** | 2,3 % |
+| Gagny | Seine-Saint-Denis | 42 313 | 14 | 3,3 | 2,6 % |
+| Villiers-le-Bel | Val-d'Oise | 30 053 | 10 | 3,3 | 1,4 % |
+| Maisons-Alfort | Val-de-Marne | 56 799 | 22 | 3,9 | 4,8 % |
+| Saint-Médard-en-Jalles | Gironde | 32 910 | 13 | 4,0 | 4,7 % |
+| Creil | Oise | 36 301 | 17 | 4,7 | 1,2 % |
+| Meyzieu | Rhône | 36 687 | 20 | 5,5 | 4,0 % |
+| Villeneuve-Saint-Georges | Val-de-Marne | 36 221 | 20 | 5,5 | 1,6 % |
+| Ris-Orangis | Essonne | 31 189 | 17 | 5,5 | 2,3 % |
+| Argenteuil | Val-d'Oise | 106 130 | 59 | 5,6 | 2,4 % |
+| Vigneux-sur-Seine | Essonne | 31 466 | 18 | 5,7 | 2,2 % |
+| Épinay-sur-Seine | Seine-Saint-Denis | 52 833 | 31 | 5,9 | 1,6 % |
+| Colombes | Hauts-de-Seine | 91 053 | 54 | 5,9 | 4,2 % |
+
+À titre de comparaison : Neuilly-sur-Seine compte 102 points pour 10 000 habitants, et Puteaux 129.
+
+**Lecture :**
+
+- **H8 validée, et elle dépasse les Hauts-de-Seine.** **10 des 13 communes** sont en Île-de-France, surtout dans le Val-de-Marne, la Seine-Saint-Denis, le Val-d'Oise et l'Essonne. Vitry-sur-Seine compte **20 points de recharge pour près de 94 000 habitants**, soit 50 fois moins par habitant que Puteaux.
+- **Ces communes ont aussi une très faible part de VE (1,2 à 4,8 %).** Leur ratio « VE par point » n'est donc pas alarmant : c'est précisément pourquoi elles n'apparaissaient pas dans les classements par tension. Le manque de bornes y est **une barrière à l'adoption à venir**, plus qu'une saturation actuelle.
+- **C'est le résultat principal du projet :** les vrais déserts de recharge publique ne sont pas les départements en tête du classement brut, mais de **grandes communes de banlieue**, denses, où beaucoup d'habitants vivent en logement collectif et ne peuvent probablement pas recharger chez eux.
+
+### H9 — Densité de bornes, adoption des VE et profil des communes 🔍
+
+- **Observation :** les communes les moins équipées sont aussi celles où la part de VE est la plus faible.
+- **Hypothèse :** les deux sont liés au profil socio-économique des communes (revenus, part de logement collectif sans parking privé). Le sens de la causalité reste ouvert : peu de bornes freinent l'achat de VE, et peu de VE découragent l'installation de bornes.
+- **Test possible (extension du projet) :** croiser avec les données de l'INSEE (revenu médian par commune, part de logements collectifs) et mesurer la corrélation. Hors du périmètre actuel, mais c'est l'enrichissement le plus naturel.
+
 ---
 
 ## Prochaines étapes
@@ -247,5 +284,5 @@ Après application du nouveau seuil, seules Rueil-Malmaison et Clichy restent si
 3. ~~Consigner le top 10 corrigé et vérifier H5~~ ✅ fait.
 4. ~~Tester H7~~ ✅ fait, seuil de détection affiné.
 5. ~~Tester H6~~ ✅ fait : décision de présenter deux indicateurs complémentaires.
-6. Tester H8 (grandes communes les moins équipées par habitant).
+6. ~~Tester H8~~ ✅ fait : résultat principal du projet identifié.
 7. Construire le dashboard Power BI à partir des vues corrigées, avec les avertissements de couverture visibles.
