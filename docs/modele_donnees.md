@@ -66,7 +66,7 @@ erDiagram
 - **Hiérarchie géographique dénormalisée** dans `dim_commune` (commune > département > région) : un seul niveau de jointure, plus simple pour Power BI.
 - **`dim_date` générée en SQL** (`GENERATE_DATE_ARRAY`) plutôt qu'importée : elle couvre toujours toutes les dates des faits.
 - **Intégrité référentielle** : les faits dont la commune n'existe pas dans le référentiel sont exclus (< 1 %), et des requêtes de contrôle sont fournies en fin de `sql/02_faits.sql`.
-- **Dates de mise en service manquantes** (≈ 49 % des points) : conservées à `NULL` plutôt qu'inventées. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et le signale.
+- **Dates de mise en service manquantes** (≈ 47 % des points) : conservées à `NULL` plutôt qu'inventées. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et le signale.
 - **Traçabilité** : `methode_rattachement` indique comment chaque point a été rattaché à sa commune (code INSEE, code postal ou GPS).
 
 ## Vues d'analyse (`sql/03_analyses.sql`)
