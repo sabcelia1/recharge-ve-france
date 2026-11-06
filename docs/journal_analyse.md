@@ -11,7 +11,7 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 | # | Hypothèse | Statut |
 |---|---|---|
 | H1 | Les bornes non rattachées à une commune ont un code postal saisi à la place du code INSEE | ❌ rejetée (0,9 % seulement) |
-| H2 | Ces bornes ont un code commune vide, mais des coordonnées GPS exploitables | ✅ validée (26,4 % récupérés) |
+| H2 | Ces bornes ont un code commune vide, mais des coordonnées GPS exploitables | ✅ validée (28,4 % récupérés sur les données finales) |
 | H3 | Le classement de l'outre-mer reflète une sous-déclaration des bornes, pas un réel sous-équipement | 🔍 à vérifier |
 | H4 | Les départements d'Île-de-France sont gonflés par les flottes d'entreprise et de loueurs | ✅ partiellement validée (Yvelines, Seine-Saint-Denis) |
 | H5 | Les départements ruraux du classement (Aisne, Haute-Loire, Haute-Corse) sont de vrais territoires sous-équipés | ✅ partiellement validée (Haute-Loire oui ; Aisne et Haute-Corse non) |
@@ -23,6 +23,17 @@ Ce journal trace la démarche suivie : ce qui a été observé, les hypothèses 
 ---
 
 ## Semaine 1 — Qualité des données
+
+> **Note sur les versions de données.** Le diagnostic ci-dessous a été mené le 8 octobre 2026 sur une première extraction de la base IRVE (170 624 points). Les données ont ensuite été retéléchargées le 28 octobre 2026 (177 956 points) : c'est cette version qui est chargée dans BigQuery et utilisée pour toutes les analyses des semaines 2 et suivantes. Les conclusions sont identiques, les chiffres à jour figurent dans le tableau ci-dessous et dans [`reports/qualite_donnees.md`](../reports/qualite_donnees.md).
+>
+> | Indicateur | 8 octobre (diagnostic) | 28 octobre (données finales) |
+> |---|---:|---:|
+> | Points de recharge (lignes brutes) | 170 624 | 177 956 |
+> | Code commune vide | 44 606 | 50 267 |
+> | Rattachés par code postal | 1 552 (0,9 %) | 1 432 (0,8 %) |
+> | Rattachés par coordonnées GPS | 44 973 (26,4 %) | 50 622 (28,4 %) |
+> | Non rattachés | 72 | 76 |
+> | Dates de mise en service manquantes | 82 848 (49 %) | 83 674 (47 %) |
 
 ### Constat : 27 % des points de recharge non rattachés à une commune
 
@@ -44,7 +55,7 @@ Au premier passage du nettoyage, 46 597 points sur 170 624 (27,3 %) avaient un c
 - **Limite acceptée :** près d'une limite communale, un point peut être attribué à la commune voisine. Effet négligeable à la maille départementale, qui est la maille principale de l'analyse.
 - **Traçabilité :** la colonne `methode_rattachement` indique pour chaque point la méthode utilisée (code INSEE, code postal, coordonnées GPS).
 
-### 📌 Dates de mise en service manquantes (49 %)
+### 📌 Dates de mise en service manquantes (47 à 49 % selon la version)
 
 - **Constat :** 82 848 points sur 170 624 n'ont pas de date de mise en service exploitable.
 - **Options envisagées :** (a) supprimer ces points, (b) imputer une date, (c) les conserver avec une date vide.

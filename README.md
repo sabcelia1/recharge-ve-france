@@ -49,7 +49,7 @@ Ce projet identifie les **territoires sous-équipés**, où le nombre de véhicu
 
 ## 🧹 Qualité des données
 
-Le nettoyage applique des règles explicites, chacune chiffrée dans [`reports/qualite_donnees.md`](reports/qualite_donnees.md). Résultat clé : **99,96 % des 170 624 points de recharge rattachés à une commune**, dont 26 % récupérés grâce à leurs coordonnées GPS car leur code commune était vide.
+Le nettoyage applique des règles explicites, chacune chiffrée dans [`reports/qualite_donnees.md`](reports/qualite_donnees.md). Résultat clé : **99,96 % des 177 954 points de recharge rattachés à une commune**, dont 28 % récupérés grâce à leurs coordonnées GPS car leur code commune était vide.
 
 
 - **Doublons** : suppression sur l'identifiant unique du point de recharge (`id_pdc_itinerance`).
@@ -73,7 +73,7 @@ erDiagram
     dim_palier_puissance ||--o{ fct_point_recharge : palier_puissance
 ```
 
-- **`fct_point_recharge`** — 1 ligne par point de recharge public (≈ 170 000)
+- **`fct_point_recharge`** — 1 ligne par point de recharge public (≈ 178 000)
 - **`fct_parc_vehicules`** — 1 ligne par commune et par trimestre (stock semi-additif : jamais sommé entre trimestres)
 - **Vues d'analyse** — `v_tension_departement`, `v_tension_commune`, `v_evolution_trimestrielle`, consommées par les dashboards
 
@@ -91,7 +91,7 @@ Les hypothèses formulées, les tests effectués (y compris les pistes rejetées
 
 - Le rattachement par coordonnées GPS utilise le centre de la commune la plus proche : près d'une limite communale, un point peut être attribué à la commune voisine. L'effet est négligeable à la maille départementale.
 - Les véhicules sont rattachés à l'**adresse d'immatriculation**. Les flottes d'entreprise et de loueurs gonflent artificiellement certaines communes (sièges sociaux, zones aéroportuaires). L'analyse au niveau **départemental** atténue ce biais.
-- Environ **49 % des points n'ont pas de date de mise en service**. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et sous-estime donc le niveau (la tendance reste exploitable).
+- Environ **47 % des points n'ont pas de date de mise en service**. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et sous-estime donc le niveau (la tendance reste exploitable).
 - La base IRVE ne couvre que la **recharge ouverte au public**, pas la recharge à domicile ou en entreprise.
 - La base IRVE consolidée est en version **bêta** et dépend des déclarations des aménageurs.
 
