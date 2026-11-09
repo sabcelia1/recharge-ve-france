@@ -294,6 +294,51 @@ Les 15 communes métropolitaines les moins équipées (requête relancée avec l
 - **Écart :** environ **25 000 points, soit 12 %**, sont absents des déclarations de la base nationale.
 - **Conséquences :** toutes les densités calculées sont des **minimums**. Le constat sur l'outre-mer (H3) va dans le même sens. Les écarts relatifs entre communes restent exploitables, à condition que la sous-déclaration ne soit pas concentrée sur certains territoires, ce qui ne peut pas être vérifié avec ces données.
 
+## Semaine 4 — Opportunités d'implantation
+
+### Question
+
+Où installer des points de recharge publics en priorité, et pour quel ordre de grandeur d'investissement ?
+
+### Méthode (`sql/05_opportunites.sql`)
+
+- **Périmètre :** communes de plus de 30 000 habitants, métropole, hors communes à suspicion de flotte (262 communes).
+- **Repères (médianes du périmètre) :** **21,2 points pour 10 000 habitants** et **14,8 VE par point**. La médiane est préférée à la moyenne pour ne pas être tirée par des extrêmes comme Puteaux.
+- **Profils :**
+  - *Demande non servie* : densité sous la médiane **et** tension au-dessus. La demande existe déjà.
+  - *Rattrapage* : moins de la moitié de la densité médiane, avec peu de VE.
+  - *Sans urgence* : le reste.
+- **Points manquants :** nombre de points à installer pour atteindre la densité médiane. C'est une estimation de la taille du marché, pas un objectif.
+
+### Résultats
+
+| Profil | Communes | Points manquants |
+|---|---:|---:|
+| 1 · Demande non servie | 100 | 6 354 |
+| 2 · Rattrapage | 2 | 106 |
+| 3 · Sans urgence | 160 | 987 |
+
+- **Surprise par rapport à la page « déserts » :** Vitry-sur-Seine, Maisons-Alfort ou Épinay-sur-Seine ont peu de VE, mais tellement peu de bornes que celles-ci sont **déjà saturées** (jusqu'à 93,5 VE par point à Maisons-Alfort). Elles relèvent de la demande non servie, pas d'un simple pari sur l'avenir. Seules 2 communes correspondent au profil « rattrapage ».
+- **Les 23 premières communes concentrent 3 428 points manquants, soit 54 % du déficit.** Elles se regroupent en trois zones :
+
+| Zone | Communes | Points manquants | VE par point |
+|---|---|---:|---:|
+| Petite couronne parisienne | 15 communes (Val-de-Marne, Seine-Saint-Denis, Val-d'Oise, Hauts-de-Seine) | 1 669 | 27 à 55 selon le département |
+| Métropole de Lyon | Lyon, Villeurbanne | 816 | 40,5 |
+| Grandes villes de province | Marseille, Nantes, Orléans, Le Mans, Reims, Dunkerque | 943 | 16 à 29 |
+
+### Ordre de grandeur de l'investissement
+
+- Coût par point, ordres de grandeur relevés dans la presse ([Économie Matin, 24/10/2026](https://www.economiematin.fr/?p=234369)) : **2 000 à 5 000 €** en recharge normale (7 à 22 kW), **50 000 à 150 000 €** en très haute puissance (150 kW et plus, raccordement compris).
+- **Combler le déficit des 100 communes en demande non servie** (6 354 points) en recharge normale représenterait **13 à 32 M€**. Avec 10 % de points très haute puissance, on passerait à **43 à 124 M€**.
+
+### Limites propres à cette analyse
+
+- La demande est mesurée par les **immatriculations**, sans données de trafic ni d'utilisation réelle des bornes.
+- La base IRVE compte environ **12 % de points de moins** que le baromètre Avere-France : le déficit est probablement **surestimé**.
+- Les coûts sont des ordres de grandeur. Une implantation réelle demande une étude de terrain : stationnement disponible, capacité du réseau électrique, projets déjà engagés par les opérateurs et les collectivités.
+- Analyse exploratoire à visée de démonstration, pas une recommandation d'investissement.
+
 ---
 
 ## Prochaines étapes

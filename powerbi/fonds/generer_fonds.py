@@ -210,10 +210,51 @@ for i, (chiffre, texte) in enumerate(RESULTATS):
                f'<div class="big" style="font-size:30px">{chiffre}</div>'
                f'<div class="ctext" style="font-size:12.5px">{texte}</div></div>')
 
+# --- Page 5 : opportunités d'implantation ----------------------------------------------
+corps5 = ""
+CHIFFRES = [("100", "grandes communes où la <b>demande n'est pas servie</b> : moins de bornes que la médiane et plus de VE par point"),
+            ("6 354", "points manquants pour atteindre la <b>densité médiane</b> (21,2 points pour 10 000 habitants)"),
+            ("13 à 32 M€", "pour les installer en <b>recharge normale</b> (2 000 à 5 000 € par point, 7 à 22 kW)")]
+for i, (chiffre, texte) in enumerate(CHIFFRES):
+    x = 32 + i * 411
+    corps5 += (f'<div class="abs panel callout" style="left:{x}px;top:92px;width:394px;height:76px;gap:16px;padding:0 20px">'
+               f'<div class="big" style="font-size:28px">{chiffre}</div>'
+               f'<div class="ctext" style="font-size:12px;line-height:1.4">{texte}</div></div>')
+
+AXES = [("1", TEAL, "Petite couronne parisienne", "15 communes · 1 669 points manquants · ≈ 3 à 8 M€",
+         "Vitry-sur-Seine, Saint-Denis, Argenteuil, Colombes… Les rares bornes sont <b>déjà saturées</b> "
+         "(jusqu'à 94 VE par point à Maisons-Alfort). <b>Recharge normale</b> sur voirie et parkings publics, "
+         "pour les habitants sans parking privé."),
+        ("2", NAVY, "Métropole de Lyon", "Lyon, Villeurbanne · 816 points manquants · ≈ 1,6 à 4 M€",
+         "Lyon compte <b>10 points pour 10 000 habitants</b>, deux fois moins que la médiane : le plus gros "
+         "déficit d'une seule commune (570 points). Recharge normale en quartier, et quelques <b>hubs rapides</b>."),
+        ("3", AMBER, "Grandes villes de province", "6 villes · 943 points manquants · ≈ 1,9 à 4,7 M€",
+         "Marseille, Nantes, Orléans, Le Mans, Reims, Dunkerque : déficit réel mais <b>tension modérée</b> "
+         "(16 à 29 VE par point). Priorité 2, à <b>planifier avec les collectivités</b>.")]
+for i, (num, col, titre, chiffres, texte) in enumerate(AXES):
+    y = 184 + i * 156
+    corps5 += (f'<div class="abs panel" style="left:{x0}px;top:{y}px;width:600px;height:144px;padding:16px 20px 0 76px">'.format() if False else
+               f'<div class="abs panel" style="left:32px;top:{y}px;width:600px;height:144px;padding:16px 22px 0 78px">'
+               f'<div class="abs" style="left:20px;top:18px;width:40px;height:40px;border-radius:50%;background:{col};'
+               f'color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center">{num}</div>'
+               f'<div class="ptitre" style="font-size:15px">{titre}</div>'
+               f'<div style="font-size:11.5px;font-weight:700;color:{TEAL if col != AMBER else "#C47F12"};margin:3px 0 8px">{chiffres}</div>'
+               f'<div style="font-size:12px;line-height:1.45;color:{NAVY}">{texte}</div></div>')
+corps5 += panel(648, 184, 600, 456, "Communes prioritaires",
+                "profil « demande non servie » · triées par points manquants")
+corps5 += ('<div class="abs" style="left:32px;top:652px;width:1216px;font-size:10.5px;line-height:1.45;color:#5B6676">'
+           '<b>À confirmer sur le terrain.</b> Demande mesurée par les immatriculations, sans données d\'usage ; la base IRVE compte '
+           'environ 12 % de points de moins que le baromètre Avere-France, donc le déficit est probablement surestimé ; coûts : ordres de '
+           'grandeur relevés dans la presse (Économie Matin, 24/10/2026). Analyse exploratoire, pas une recommandation d\'investissement.</div>')
+POSITIONS["5 · Opportunités"] = [
+    ("Tableau des communes prioritaires", 660, 238, 576, 392),
+    ("Segment Région", 1032, 20, 216, 36)]
+
 PAGES = {
     "1_vue_ensemble": page("Recharge électrique en France", "Vue d'ensemble · bornes publiques et parc de véhicules électriques", corps1),
     "2_classement_corrige": page("Classement corrigé des départements", "Métropole · communes à suspicion de flotte exclues", corps2),
     "3_deserts_recharge": page("Les déserts de recharge", "Communes de plus de 30 000 habitants · métropole, hors flottes", corps3),
+    "5_opportunites": page("Opportunités d'implantation", "Où installer des points de recharge en priorité ? · communes de plus de 30 000 habitants, métropole, hors flottes", corps5),
     "4_methode_limites": page("Méthode et limites", "D'où viennent les chiffres, ce qui a été corrigé, ce qui reste incertain", corps4, avec_region=False),
 }
 

@@ -17,7 +17,7 @@
 --                            que la médiane -> la demande existe déjà
 --   2 · Rattrapage         : moins de la moitié de la densité médiane, mais peu
 --                            de VE pour l'instant -> pari sur l'adoption future
---   3 · Équipée            : le reste
+--   3 · Sans urgence       : le reste (densité correcte, ou déficit avec peu de demande)
 --
 -- points_manquants : nombre de points à installer pour atteindre la densité
 --                    médiane (estimation de la taille du marché, pas un objectif)
@@ -58,7 +58,7 @@ SELECT
     WHEN p.points_pour_10k_hab < r.densite_mediane
      AND p.ve_par_point > r.tension_mediane          THEN '1 · Demande non servie'
     WHEN p.points_pour_10k_hab < r.densite_mediane / 2 THEN '2 · Rattrapage'
-    ELSE '3 · Équipée'
+    ELSE '3 · Sans urgence'
   END                                                              AS profil
 FROM perimetre AS p
 CROSS JOIN reperes AS r;
