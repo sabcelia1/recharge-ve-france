@@ -1,0 +1,41 @@
+relationship 955f2a96-8159-4466-807b-ec5e0c404ed0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: v_evolution_trimestrielle.date_arrete
+	toColumn: LocalDateTable_f7b25b62-4edc-4184-8f15-8001c0d496ea.Date
+
+relationship AutoDetected_1fbc85aa-dac6-4dfa-9f5a-fd50d71e49bc
+	fromColumn: fct_parc_vehicules.code_insee
+	toColumn: dim_commune.code_insee
+
+relationship AutoDetected_5d1e585e-78a8-448f-a31b-37a02e8f195f
+	fromColumn: fct_point_recharge.code_insee
+	toColumn: dim_commune.code_insee
+
+relationship AutoDetected_b135b1e8-26a4-4e28-b861-83dfb29f38fd
+	fromColumn: fct_point_recharge.palier_puissance
+	toColumn: dim_palier_puissance.palier_puissance
+
+relationship da3d5317-0302-c8b8-b9e6-b459d08c39c8
+	fromColumn: fct_point_recharge.date_mise_en_service
+	toColumn: dim_date.date
+
+relationship 5a125063-2b84-4a1d-2dda-a9f99d5f0d99
+	fromColumn: fct_parc_vehicules.date_arrete
+	toColumn: dim_date.date
+
+relationship AutoDetected_31428122-e7db-4bba-8f7b-e6bb44f28e9b
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: v_opportunites_commune.code_insee
+	toColumn: dim_commune.code_insee
+
+relationship AutoDetected_c0870e25-b009-4f82-91e5-60aae949e84b
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: v_opportunites_commune.code_insee
+	toColumn: v_tension_commune.code_insee
+
+relationship AutoDetected_311be535-aeff-413d-a2a4-73d1e0974f81
+	fromColumn: v_opportunites_commune.code_departement
+	toColumn: v_tension_departement_corrigee.code_departement
+

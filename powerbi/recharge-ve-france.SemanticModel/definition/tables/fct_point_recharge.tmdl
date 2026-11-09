@@ -1,0 +1,167 @@
+table fct_point_recharge
+	lineageTag: f3615f2e-f4e2-419b-a279-675f4412f4ab
+
+	measure 'Nb points' = COUNTROWS(fct_point_recharge)
+		formatString: 0
+		lineageTag: 2351c683-3668-44af-9901-93d9db87e440
+
+	measure 'Nb points rapides' = CALCULATE([Nb points], dim_palier_puissance[est_recharge_rapide] = TRUE())
+		formatString: 0
+		lineageTag: 6ef6048c-fc20-4f4e-9443-b9dd058e9f91
+
+	measure '% recharge rapide' = DIVIDE([Nb points rapides], [Nb points])
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: e789baa1-aaff-4148-942f-9c52f84936bd
+
+	measure 'Nb VE' =
+			
+			VAR derniere_date = MAX(fct_parc_vehicules[date_arrete])
+			RETURN
+			    CALCULATE(
+			        SUM(fct_parc_vehicules[nb_vp_electriques]),
+			        fct_parc_vehicules[date_arrete] = derniere_date
+			    )
+		formatString: 0
+		lineageTag: 2506e559-8860-42bb-ae01-b996d567b66e
+
+	measure Population = SUM(dim_commune[population])
+		formatString: 0
+		lineageTag: 6af182d9-ef3a-465d-812b-3b89748fa4a8
+
+	measure 'VE par point' = DIVIDE([Nb VE], [Nb points])
+		lineageTag: 358a1125-d027-4c44-aebf-3a0d8c1bd7f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Points pour 10k hab' = DIVIDE([Nb points], [Population]) * 10000
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 76989140-2970-4703-a538-a282e7f98f66
+
+	column id_pdc_itinerance
+		dataType: string
+		lineageTag: eab430cf-b2d3-45b6-81de-36445d668205
+		summarizeBy: none
+		sourceColumn: id_pdc_itinerance
+
+		annotation SummarizationSetBy = Automatic
+
+	column id_station_itinerance
+		dataType: string
+		lineageTag: 8a7db802-6491-4146-8def-8a763a02aeb4
+		summarizeBy: none
+		sourceColumn: id_station_itinerance
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_insee
+		dataType: string
+		lineageTag: f50a32cc-1e71-47c1-aee1-a5ecb0fe7ce7
+		summarizeBy: none
+		sourceColumn: code_insee
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_mise_en_service
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c376656b-a1dd-4bf8-9703-a84a59dc0a1a
+		summarizeBy: none
+		sourceColumn: date_mise_en_service
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column puissance_kw
+		dataType: double
+		lineageTag: 8f115829-9a91-49ef-bf12-92d5e740cf0e
+		summarizeBy: sum
+		sourceColumn: puissance_kw
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column palier_puissance
+		dataType: string
+		lineageTag: 4dbb1196-433b-49fa-b692-06901957dd12
+		summarizeBy: none
+		sourceColumn: palier_puissance
+
+		annotation SummarizationSetBy = Automatic
+
+	column implantation_station
+		dataType: string
+		lineageTag: d0a8ad4a-879e-446b-8bb0-c9d78a904f9f
+		summarizeBy: none
+		sourceColumn: implantation_station
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_operateur
+		dataType: string
+		lineageTag: 0ff25b91-de6c-4ce5-9c7f-c6926ee17fe9
+		summarizeBy: none
+		sourceColumn: nom_operateur
+
+		annotation SummarizationSetBy = Automatic
+
+	column a_prise_ccs
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 482c913f-1b16-4402-beae-3ab725a7ce19
+		summarizeBy: none
+		sourceColumn: a_prise_ccs
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_gratuit
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 50d5968d-b242-41db-8832-bf9a689d713d
+		summarizeBy: none
+		sourceColumn: est_gratuit
+
+		annotation SummarizationSetBy = Automatic
+
+	column methode_rattachement
+		dataType: string
+		lineageTag: a1ae516e-8b04-4ffb-b816-08f14a74451d
+		summarizeBy: none
+		sourceColumn: methode_rattachement
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: double
+		lineageTag: 7b1bfe94-7021-4aae-9271-8a0e6ad253f6
+		summarizeBy: sum
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column latitude
+		dataType: double
+		lineageTag: d5516a51-ea6d-4f44-b822-f9a8e9239311
+		summarizeBy: sum
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fct_point_recharge = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    fct_point_recharge_Table = mart_Schema{[Name="fct_point_recharge",Kind="Table"]}[Data]
+				in
+				    fct_point_recharge_Table
+
+	annotation PBI_ResultType = Table
+

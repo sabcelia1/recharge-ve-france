@@ -1,0 +1,140 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "9acb16a104803e08d881",
+  "position": {
+    "x": 82.463054187192114,
+    "y": 482.807881773399,
+    "z": 1000,
+    "height": 517.38916256157631,
+    "width": 1081.3300492610838,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "lineClusteredColumnComboChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_evolution_trimestrielle"
+                    }
+                  },
+                  "Property": "date_arrete"
+                }
+              },
+              "queryRef": "v_evolution_trimestrielle.date_arrete",
+              "nativeQueryRef": "date_arrete",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_evolution_trimestrielle"
+                        }
+                      },
+                      "Property": "nb_ve"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_evolution_trimestrielle.nb_ve)",
+              "nativeQueryRef": "Véhicules électriques",
+              "displayName": "Véhicules électriques"
+            }
+          ]
+        },
+        "Y2": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_evolution_trimestrielle"
+                        }
+                      },
+                      "Property": "nb_points_date_connue"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_evolution_trimestrielle.nb_points_date_connue)",
+              "nativeQueryRef": "Points de recharge (date connue)",
+              "displayName": "Points de recharge (date connue)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "v_evolution_trimestrielle"
+                  }
+                },
+                "Property": "date_arrete"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Parc de VE et points de recharge (France entière)'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Véhicules électriques et Points de recharge (date connue)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

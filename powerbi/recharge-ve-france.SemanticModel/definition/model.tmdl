@@ -1,0 +1,29 @@
+model Model
+	culture: fr-FR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: fr-FR
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dim_commune","dim_date","dim_palier_puissance","v_evolution_trimestrielle","v_tension_commune","v_tension_departement_corrigee","fct_parc_vehicules","fct_point_recharge","v_opportunites_commune"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_commune
+ref table dim_date
+ref table DateTableTemplate_89e5dfd5-0583-447b-a362-e44b0db8b545
+ref table dim_palier_puissance
+ref table v_evolution_trimestrielle
+ref table LocalDateTable_f7b25b62-4edc-4184-8f15-8001c0d496ea
+ref table v_tension_commune
+ref table v_tension_departement_corrigee
+ref table fct_parc_vehicules
+ref table fct_point_recharge
+ref table v_opportunites_commune
+
+ref cultureInfo fr-FR
+

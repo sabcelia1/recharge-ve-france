@@ -1,0 +1,224 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "5143e05001d060787db8",
+  "position": {
+    "x": 828.62068965517233,
+    "y": 344.48275862068965,
+    "z": 1000,
+    "height": 679.655172413793,
+    "width": 1036.1083743842364,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "nom_departement"
+                }
+              },
+              "queryRef": "v_tension_departement_corrigee.nom_departement",
+              "nativeQueryRef": "Département",
+              "displayName": "Département"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "nb_ve"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.nb_ve)",
+              "nativeQueryRef": "VE ",
+              "displayName": "VE "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "nb_points"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.nb_points)",
+              "nativeQueryRef": "Points",
+              "displayName": "Points"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "ve_par_point"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.ve_par_point)",
+              "nativeQueryRef": "VE par point",
+              "displayName": "VE par point"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "points_pour_10k_hab"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.points_pour_10k_hab)",
+              "nativeQueryRef": "Points/10 000 hab",
+              "displayName": "Points/10 000 hab"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "part_points_rapides"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.part_points_rapides)",
+              "nativeQueryRef": "% rapides",
+              "displayName": "% rapides"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tension_departement_corrigee"
+                    }
+                  },
+                  "Property": "nb_communes_exclues"
+                }
+              },
+              "queryRef": "Sum(v_tension_departement_corrigee.nb_communes_exclues)",
+              "nativeQueryRef": "Communes_exclues",
+              "displayName": "Communes_exclues"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "v_tension_departement_corrigee"
+                  }
+                },
+                "Property": "ve_par_point"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "108.32178356801964D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_tension_departement_corrigee.nb_ve)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "101.52279317090812D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_tension_departement_corrigee.nb_points)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "97.21276491212627D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_tension_departement_corrigee.ve_par_point)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "98.72036590053811D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_tension_departement_corrigee.part_points_rapides)"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

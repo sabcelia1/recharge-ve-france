@@ -1,0 +1,73 @@
+table dim_commune
+	lineageTag: a432220e-131c-4098-a0b3-eee8d4f18a0a
+
+	column code_insee
+		dataType: string
+		lineageTag: 84c9f3ae-b7d5-455f-b2a7-0dbf3fff17f5
+		summarizeBy: none
+		sourceColumn: code_insee
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_commune
+		dataType: string
+		lineageTag: 9b658904-15b8-41e3-9adf-72637f8ff359
+		summarizeBy: none
+		sourceColumn: nom_commune
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_departement
+		dataType: string
+		lineageTag: 6a5ab85f-1658-42e0-8932-c136609ab218
+		summarizeBy: none
+		sourceColumn: code_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_departement
+		dataType: string
+		lineageTag: 7b1b244f-c096-4669-84b2-71c2d85294b7
+		summarizeBy: none
+		sourceColumn: nom_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_region
+		dataType: string
+		lineageTag: b3410bb4-c75f-46fe-9c6a-8ad8d2be092c
+		summarizeBy: none
+		sourceColumn: code_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_region
+		dataType: string
+		lineageTag: 9b184746-fcd1-4540-af02-1e1dfcca62c4
+		summarizeBy: none
+		sourceColumn: nom_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e86048b-e144-430b-9111-5998bd103772
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_commune = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    dim_commune_Table = mart_Schema{[Name="dim_commune",Kind="Table"]}[Data]
+				in
+				    dim_commune_Table
+
+	annotation PBI_ResultType = Table
+

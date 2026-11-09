@@ -1,0 +1,308 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "155f894f00b353536d67",
+  "position": {
+    "x": 990.63829787234044,
+    "y": 364.741641337386,
+    "z": 0,
+    "height": 561.70212765957444,
+    "width": 866.62613981762922,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_opportunites_commune"
+                    }
+                  },
+                  "Property": "nom_commune"
+                }
+              },
+              "queryRef": "v_opportunites_commune.nom_commune",
+              "nativeQueryRef": "Commune",
+              "displayName": "Commune"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_opportunites_commune"
+                    }
+                  },
+                  "Property": "nom_departement"
+                }
+              },
+              "queryRef": "v_opportunites_commune.nom_departement",
+              "nativeQueryRef": "Département",
+              "displayName": "Département"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_opportunites_commune"
+                    }
+                  },
+                  "Property": "ve_par_point"
+                }
+              },
+              "queryRef": "Sum(v_opportunites_commune.ve_par_point)",
+              "nativeQueryRef": "VE par point",
+              "displayName": "VE par point"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_opportunites_commune"
+                    }
+                  },
+                  "Property": "points_pour_10k_hab"
+                }
+              },
+              "queryRef": "Sum(v_opportunites_commune.points_pour_10k_hab)",
+              "nativeQueryRef": "Points  /10 000hab",
+              "displayName": "Points  /10 000hab"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_opportunites_commune"
+                    }
+                  },
+                  "Property": "points_manquants"
+                }
+              },
+              "queryRef": "Sum(v_opportunites_commune.points_manquants)",
+              "nativeQueryRef": "Points manquants",
+              "displayName": "Points manquants"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "v_opportunites_commune"
+                  }
+                },
+                "Property": "points_manquants"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "165.59113300492612D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "v_opportunites_commune.nom_departement"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "111.27091935078886D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_opportunites_commune.ve_par_point)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "240.9408861687641D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_opportunites_commune.points_pour_10k_hab)"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d599a614443093db07a1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "nom_commune"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "45f36cce594014540dc4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "nom_departement"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "562a843ebb9e225c5a7d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "ve_par_point"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1a142cf07271525e70d4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "points_pour_10k_hab"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a1e84877104e39040096",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "points_manquants"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "aa29bbc6b9a1185bd5c8",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "v_opportunites_commune"
+              }
+            },
+            "Property": "profil"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "v_opportunites_commune",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "profil"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'1 · Demande non servie'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+table dim_date
+	lineageTag: 19f4e7c5-5ac9-4f6c-ae49-bbcc7ce447ad
+	dataCategory: Time
+
+	column date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: a555ec4a-3bc5-499a-aa74-af6ef534ba79
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column annee
+		dataType: int64
+		formatString: 0
+		lineageTag: 7720062c-614e-4bcc-b208-f38ffcb23e42
+		summarizeBy: sum
+		sourceColumn: annee
+
+		annotation SummarizationSetBy = Automatic
+
+	column trimestre
+		dataType: int64
+		formatString: 0
+		lineageTag: f8a4325e-a264-447d-a047-6fe70ea0333a
+		summarizeBy: sum
+		sourceColumn: trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column libelle_trimestre
+		dataType: string
+		lineageTag: 62b36074-2020-4180-8ce3-9aa6520d3b50
+		summarizeBy: none
+		sourceColumn: libelle_trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column mois
+		dataType: int64
+		formatString: 0
+		lineageTag: 59b01dbb-82e5-49ad-a8fb-e1dc3d08373e
+		summarizeBy: sum
+		sourceColumn: mois
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_fin_trimestre
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 48a9578a-9973-4213-aa37-917d0690baf0
+		summarizeBy: none
+		sourceColumn: est_fin_trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    dim_date_Table = mart_Schema{[Name="dim_date",Kind="Table"]}[Data]
+				in
+				    dim_date_Table
+
+	annotation PBI_ResultType = Table
+

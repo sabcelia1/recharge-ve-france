@@ -1,0 +1,157 @@
+table v_opportunites_commune
+	lineageTag: e50d94cb-ac84-4c81-b05b-8453358bc4d2
+
+	column code_insee
+		dataType: string
+		lineageTag: 0b947b9c-7001-4be4-8c22-308c6743954e
+		summarizeBy: none
+		sourceColumn: code_insee
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_commune
+		dataType: string
+		lineageTag: 7855d15e-b8a4-4737-a894-12b16595b216
+		summarizeBy: none
+		sourceColumn: nom_commune
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_departement
+		dataType: string
+		lineageTag: 220d6257-68ad-491d-a6a1-aeddfdb798c6
+		summarizeBy: none
+		sourceColumn: code_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_departement
+		dataType: string
+		lineageTag: 1f55dbca-d247-4846-9892-d46a48d79fea
+		summarizeBy: none
+		sourceColumn: nom_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_region
+		dataType: string
+		lineageTag: c0a2768a-c2f9-48fc-bfe7-0d5db716c894
+		summarizeBy: none
+		sourceColumn: nom_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: 0
+		lineageTag: 91566c5e-6f0d-463a-ae9f-ba6f82fc68ad
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_ve
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b40760d-70bc-41ba-b861-dd54094e6256
+		summarizeBy: sum
+		sourceColumn: nb_ve
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_points
+		dataType: int64
+		formatString: 0
+		lineageTag: 902a6723-84b7-4b80-8fbc-ec2403199028
+		summarizeBy: sum
+		sourceColumn: nb_points
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_points_rapides
+		dataType: int64
+		formatString: 0
+		lineageTag: 57000f42-9dba-42b1-84e3-3189421497e5
+		summarizeBy: sum
+		sourceColumn: nb_points_rapides
+
+		annotation SummarizationSetBy = Automatic
+
+	column points_pour_10k_hab
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 651c8a47-1b65-4e7d-9344-f62f001d9b1f
+		summarizeBy: sum
+		sourceColumn: points_pour_10k_hab
+
+		annotation SummarizationSetBy = Automatic
+
+	column ve_par_point
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 2e503809-0aab-4c5f-b6fe-1793df0afd63
+		summarizeBy: sum
+		sourceColumn: ve_par_point
+
+		annotation SummarizationSetBy = Automatic
+
+	column part_ve_dans_parc
+		dataType: double
+		lineageTag: 197d4e80-11fb-467a-b209-82a36e5322c4
+		summarizeBy: sum
+		sourceColumn: part_ve_dans_parc
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column densite_mediane
+		dataType: double
+		lineageTag: 78e38023-b8a9-471f-b4a0-2a1b6e08b068
+		summarizeBy: sum
+		sourceColumn: densite_mediane
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tension_mediane
+		dataType: double
+		lineageTag: e90c8025-b7a4-4fea-95e6-078011e94dd2
+		summarizeBy: sum
+		sourceColumn: tension_mediane
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column points_manquants
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ae954e1-8845-424d-9f09-1a6c904d22f7
+		summarizeBy: sum
+		sourceColumn: points_manquants
+
+		annotation SummarizationSetBy = Automatic
+
+	column profil
+		dataType: string
+		lineageTag: 585041d0-4a77-4b4c-86bd-ad1290bc679b
+		summarizeBy: none
+		sourceColumn: profil
+
+		annotation SummarizationSetBy = Automatic
+
+	partition v_opportunites_commune = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    v_opportunites_commune_View = mart_Schema{[Name="v_opportunites_commune",Kind="View"]}[Data]
+				in
+				    v_opportunites_commune_View
+
+	annotation PBI_ResultType = Table
+
