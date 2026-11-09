@@ -1,0 +1,99 @@
+{
+  "1 · Vue d'ensemble": [
+    [
+      "Carte « Points de recharge »",
+      114,
+      132,
+      196,
+      56
+    ],
+    [
+      "Carte « Véhicules électriques »",
+      422,
+      132,
+      196,
+      56
+    ],
+    [
+      "Carte « VE par point »",
+      730,
+      132,
+      196,
+      56
+    ],
+    [
+      "Carte « Recharge rapide »",
+      1038,
+      132,
+      196,
+      56
+    ],
+    [
+      "Graphique d'évolution",
+      44,
+      282,
+      736,
+      396
+    ],
+    [
+      "Graphique par puissance",
+      820,
+      282,
+      416,
+      396
+    ],
+    [
+      "Segment Région",
+      1032,
+      20,
+      216,
+      36
+    ]
+  ],
+  "2 · Classement corrigé": [
+    [
+      "Graphique à barres (top 15)",
+      44,
+      226,
+      476,
+      450
+    ],
+    [
+      "Tableau des départements",
+      560,
+      226,
+      676,
+      450
+    ],
+    [
+      "Segment Région",
+      1032,
+      20,
+      216,
+      36
+    ]
+  ],
+  "3 · Déserts de recharge": [
+    [
+      "Graphique à barres (15 communes)",
+      44,
+      226,
+      476,
+      450
+    ],
+    [
+      "Nuage de points",
+      560,
+      226,
+      676,
+      450
+    ],
+    [
+      "Segment Région",
+      1032,
+      20,
+      216,
+      36
+    ]
+  ]
+}

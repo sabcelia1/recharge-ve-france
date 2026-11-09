@@ -278,7 +278,7 @@ Les 15 communes métropolitaines les moins équipées (requête relancée avec l
 
 **Lecture :**
 
-- **H8 validée, et elle dépasse les Hauts-de-Seine.** **12 des 15 communes** sont en Île-de-France, surtout dans le Val-de-Marne, la Seine-Saint-Denis, le Val-d'Oise et l'Essonne. Vitry-sur-Seine compte **20 points de recharge pour près de 94 000 habitants**, soit 50 fois moins par habitant que Puteaux.
+- **H8 validée, et elle dépasse les Hauts-de-Seine.** **12 des 15 communes** sont en Île-de-France, surtout dans le Val-de-Marne, la Seine-Saint-Denis, le Val-d'Oise et l'Essonne. Vitry-sur-Seine compte **20 points de recharge pour près de 94 000 habitants**, soit 60 fois moins par habitant que Puteaux.
 - **Ces communes ont aussi une très faible part de VE (1,2 à 4,8 %).** Leur ratio « VE par point » n'est donc pas alarmant : c'est précisément pourquoi elles n'apparaissaient pas dans les classements par tension. Le manque de bornes y est **une barrière à l'adoption à venir**, plus qu'une saturation actuelle.
 - **C'est le résultat principal du projet :** les vrais déserts de recharge publique ne sont pas les départements en tête du classement brut, mais de **grandes communes de banlieue**, denses, où beaucoup d'habitants vivent en logement collectif et ne peuvent probablement pas recharger chez eux.
 
