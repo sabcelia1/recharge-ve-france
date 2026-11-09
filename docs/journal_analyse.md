@@ -288,6 +288,12 @@ Les 15 communes métropolitaines les moins équipées (requête relancée avec l
 - **Hypothèse :** les deux sont liés au profil socio-économique des communes (revenus, part de logement collectif sans parking privé). Le sens de la causalité reste ouvert : peu de bornes freinent l'achat de VE, et peu de VE découragent l'installation de bornes.
 - **Test possible (extension du projet) :** croiser avec les données de l'INSEE (revenu médian par commune, part de logements collectifs) et mesurer la corrélation. Hors du périmètre actuel, mais c'est l'enrichissement le plus naturel.
 
+### 📌 Contrôle externe : couverture de la base IRVE
+
+- **Constat :** notre base compte **177 956 points** (extraction du 28/10/2026). Le baromètre Avere-France, établi avec le ministère de la Transition écologique et Gireve, en recense **202 804 fin septembre 2026** ([Économie Matin, 24/10/2026](https://www.economiematin.fr/?p=234369)). Fin 2025, il en comptait 185 501 ([Automobile Propre](https://www.automobile-propre.com/articles/bornes-de-recharge-des-voitures-electriques-ou-en-est-on-en-france-debut-2026)).
+- **Écart :** environ **25 000 points, soit 12 %**, sont absents des déclarations de la base nationale.
+- **Conséquences :** toutes les densités calculées sont des **minimums**. Le constat sur l'outre-mer (H3) va dans le même sens. Les écarts relatifs entre communes restent exploitables, à condition que la sous-déclaration ne soit pas concentrée sur certains territoires, ce qui ne peut pas être vérifié avec ces données.
+
 ---
 
 ## Prochaines étapes
