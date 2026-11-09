@@ -6,6 +6,21 @@
 
 ---
 
+## 📊 Le dashboard
+
+![Vue d'ensemble](docs/captures/1_vue_ensemble.png)
+
+<details>
+<summary><b>Voir les autres pages</b> : classement corrigé, déserts de recharge, méthode</summary>
+
+![Classement corrigé des départements](docs/captures/2_classement_corrige.png)
+![Les déserts de recharge](docs/captures/3_deserts_recharge.png)
+![Méthode et limites](docs/captures/4_methode_limites.png)
+
+</details>
+
+Rapport Power BI connecté à BigQuery : 4 pages, mesures DAX, thème et fonds de page sur mesure (dossier [`powerbi/`](powerbi/)).
+
 ## 🎯 Problématique
 
 Le parc de voitures électriques progresse rapidement en France. Les points de recharge publics suivent-ils le rythme partout ?
