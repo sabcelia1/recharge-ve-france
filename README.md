@@ -92,6 +92,7 @@ Les hypothèses formulées, les tests effectués (y compris les pistes rejetées
 - Le rattachement par coordonnées GPS utilise le centre de la commune la plus proche : près d'une limite communale, un point peut être attribué à la commune voisine. L'effet est négligeable à la maille départementale.
 - Les véhicules sont rattachés à l'**adresse d'immatriculation**. Les flottes d'entreprise et de loueurs gonflent artificiellement certaines communes (sièges sociaux, zones aéroportuaires). L'analyse au niveau **départemental** atténue ce biais.
 - Environ **47 % des points n'ont pas de date de mise en service**. Les indicateurs « photo à date » utilisent tous les points ; la courbe d'évolution n'utilise que les points datés et sous-estime donc le niveau (la tendance reste exploitable).
+- **Couverture de la base IRVE** : elle compte 177 956 points au 28/10/2026, alors que le baromètre Avere-France en recense 202 804 fin septembre 2026 ([Économie Matin](https://www.economiematin.fr/?p=234369)). Environ 12 % des points publics manquent donc dans les déclarations : les densités calculées sont des **minimums**.
 - La base IRVE ne couvre que la **recharge ouverte au public**, pas la recharge à domicile ou en entreprise.
 - La base IRVE consolidée est en version **bêta** et dépend des déclarations des aménageurs.
 
