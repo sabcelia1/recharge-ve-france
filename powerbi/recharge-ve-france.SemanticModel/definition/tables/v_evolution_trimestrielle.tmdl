@@ -1,0 +1,87 @@
+table v_evolution_trimestrielle
+	lineageTag: c24d0022-f2c7-4f68-b2b8-2b643b981bd3
+
+	column date_arrete
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 06f5d215-c92c-4aa3-90d5-2d0187cb2c87
+		summarizeBy: none
+		sourceColumn: date_arrete
+
+		variation Variation
+			isDefault
+			relationship: 955f2a96-8159-4466-807b-ec5e0c404ed0
+			defaultHierarchy: LocalDateTable_f7b25b62-4edc-4184-8f15-8001c0d496ea.'Hiérarchie de dates'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column libelle_trimestre
+		dataType: string
+		lineageTag: 1a3e142f-13d2-4cd8-8f25-d36a886a5c24
+		summarizeBy: none
+		sourceColumn: libelle_trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_ve
+		dataType: int64
+		formatString: 0
+		lineageTag: 812c5ae2-bc58-410f-b75b-dd0af404659e
+		summarizeBy: sum
+		sourceColumn: nb_ve
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_vp
+		dataType: int64
+		formatString: 0
+		lineageTag: aadf13ca-9fe6-4189-a24e-80b82203122c
+		summarizeBy: sum
+		sourceColumn: nb_vp
+
+		annotation SummarizationSetBy = Automatic
+
+	column part_ve_dans_parc
+		dataType: double
+		lineageTag: 688aeeef-8c11-4db2-b639-ab7e0a87c286
+		summarizeBy: sum
+		sourceColumn: part_ve_dans_parc
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nb_points_date_connue
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bba3e47-c2f2-4de4-93c2-4f0f8a83ce32
+		summarizeBy: sum
+		sourceColumn: nb_points_date_connue
+
+		annotation SummarizationSetBy = Automatic
+
+	column ve_par_point_date_connue
+		dataType: double
+		lineageTag: e1ae0422-ea5d-4e4e-ac0e-1b88c9e2b0e5
+		summarizeBy: sum
+		sourceColumn: ve_par_point_date_connue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition v_evolution_trimestrielle = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    v_evolution_trimestrielle_View = mart_Schema{[Name="v_evolution_trimestrielle",Kind="View"]}[Data]
+				in
+				    v_evolution_trimestrielle_View
+
+	annotation PBI_ResultType = Table
+

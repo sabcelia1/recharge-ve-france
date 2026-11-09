@@ -1,0 +1,149 @@
+table v_tension_commune
+	lineageTag: 4381917e-168a-4178-9f40-8af49b7a4e6b
+
+	column code_insee
+		dataType: string
+		lineageTag: 6ef873e6-0fb1-470d-8ffb-1c4797d7aa1d
+		summarizeBy: none
+		sourceColumn: code_insee
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_commune
+		dataType: string
+		lineageTag: 80784fe6-dfe3-4e59-b4cd-7b02a6cde988
+		summarizeBy: none
+		sourceColumn: nom_commune
+
+		annotation SummarizationSetBy = Automatic
+
+	column code_departement
+		dataType: string
+		lineageTag: d07e05e6-bb04-4dde-832c-b3c138d7aaf7
+		summarizeBy: none
+		sourceColumn: code_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_departement
+		dataType: string
+		lineageTag: c79b4072-c50c-4b0f-aee0-bc1a7a82cdc8
+		summarizeBy: none
+		sourceColumn: nom_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_region
+		dataType: string
+		lineageTag: 4a098235-0ebc-4caa-92ca-76419f62481a
+		summarizeBy: none
+		sourceColumn: nom_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: 0
+		lineageTag: 310a4298-48b2-4dba-82de-68baa355f166
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_ve
+		dataType: int64
+		formatString: 0
+		lineageTag: ebbff76f-f392-4e25-8b4a-457ff09774ef
+		summarizeBy: sum
+		sourceColumn: nb_ve
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_vp
+		dataType: int64
+		formatString: 0
+		lineageTag: 4df58ec8-76a1-40e2-b9f4-b6bd236f9483
+		summarizeBy: sum
+		sourceColumn: nb_vp
+
+		annotation SummarizationSetBy = Automatic
+
+	column part_ve_dans_parc
+		dataType: double
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 6427d102-8d4f-4428-aa10-b4c97babbe56
+		summarizeBy: sum
+		sourceColumn: part_ve_dans_parc
+
+		annotation SummarizationSetBy = Automatic
+
+	column voitures_par_habitant
+		dataType: double
+		lineageTag: ded9450a-e7af-49ac-9c80-e20471e27026
+		summarizeBy: sum
+		sourceColumn: voitures_par_habitant
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nb_points
+		dataType: int64
+		formatString: 0
+		lineageTag: 493504b6-1a60-4b30-a6ea-17a7c864fca6
+		summarizeBy: sum
+		sourceColumn: nb_points
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_points_rapides
+		dataType: int64
+		formatString: 0
+		lineageTag: 28d94f21-5fac-442a-a7ed-2e5c3d0306da
+		summarizeBy: sum
+		sourceColumn: nb_points_rapides
+
+		annotation SummarizationSetBy = Automatic
+
+	column ve_par_point
+		dataType: double
+		lineageTag: 9a2e22e1-118c-4ae3-8158-83f574d3fbb8
+		summarizeBy: sum
+		sourceColumn: ve_par_point
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column points_pour_10k_hab
+		dataType: double
+		lineageTag: ff15ebdb-3f39-43da-82f2-08b38651a54f
+		summarizeBy: sum
+		sourceColumn: points_pour_10k_hab
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column suspicion_flotte
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 780fa444-e197-41bc-8e39-c0f75dc9dd9d
+		summarizeBy: none
+		sourceColumn: suspicion_flotte
+
+		annotation SummarizationSetBy = Automatic
+
+	partition v_tension_commune = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    v_tension_commune_View = mart_Schema{[Name="v_tension_commune",Kind="View"]}[Data]
+				in
+				    v_tension_commune_View
+
+	annotation PBI_ResultType = Table
+

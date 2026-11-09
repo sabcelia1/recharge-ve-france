@@ -1,0 +1,53 @@
+table fct_parc_vehicules
+	lineageTag: 6d60d566-5533-4a13-887f-9f48b547f6b3
+
+	column code_insee
+		dataType: string
+		lineageTag: c6a909e0-0f3a-4495-acd3-d5726914c30c
+		summarizeBy: none
+		sourceColumn: code_insee
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_arrete
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8ddd1da0-57d2-45a3-8a6a-72e88abf31ad
+		summarizeBy: none
+		sourceColumn: date_arrete
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column nb_vp_electriques
+		dataType: int64
+		formatString: 0
+		lineageTag: 48fa50ca-91e6-4ef7-bc98-77448d98bcb1
+		summarizeBy: sum
+		sourceColumn: nb_vp_electriques
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_vp_total
+		dataType: int64
+		formatString: 0
+		lineageTag: 08a028cf-547a-4735-8051-79dc693eea8e
+		summarizeBy: sum
+		sourceColumn: nb_vp_total
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fct_parc_vehicules = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    fct_parc_vehicules_Table = mart_Schema{[Name="fct_parc_vehicules",Kind="Table"]}[Data]
+				in
+				    fct_parc_vehicules_Table
+
+	annotation PBI_ResultType = Table
+

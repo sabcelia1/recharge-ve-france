@@ -1,0 +1,132 @@
+table v_tension_departement_corrigee
+	lineageTag: ba40f927-9644-4860-89ba-000ad2b0f8b5
+
+	column code_departement
+		dataType: string
+		lineageTag: 51785727-a34d-4c02-9fb7-7d554e218bd7
+		summarizeBy: none
+		sourceColumn: code_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_departement
+		dataType: string
+		lineageTag: 1adf5ca4-57d8-4f80-9428-f2b55fb2a9c8
+		summarizeBy: none
+		sourceColumn: nom_departement
+
+		annotation SummarizationSetBy = Automatic
+
+	column nom_region
+		dataType: string
+		lineageTag: 21fc71f4-3e59-4c83-ba1d-7cec1e2d915c
+		summarizeBy: none
+		sourceColumn: nom_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_communes_exclues
+		dataType: int64
+		formatString: 0
+		lineageTag: d22322ee-826a-4f68-b945-ba3da3cdfc47
+		summarizeBy: none
+		sourceColumn: nb_communes_exclues
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_ve_exclus
+		dataType: int64
+		formatString: 0
+		lineageTag: fa837607-3a85-4b66-ac9a-98d06ce40be8
+		summarizeBy: none
+		sourceColumn: nb_ve_exclus
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: int64
+		formatString: 0
+		lineageTag: cba969e8-ff00-407e-a87a-2ce06a76715f
+		summarizeBy: none
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_ve
+		dataType: int64
+		formatString: 0
+		lineageTag: 5448f1a4-2de4-4d55-ad78-134400149162
+		summarizeBy: none
+		sourceColumn: nb_ve
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_points
+		dataType: int64
+		formatString: 0
+		lineageTag: 199ff4e3-5492-4607-b037-91c9f582e47f
+		summarizeBy: none
+		sourceColumn: nb_points
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_points_rapides
+		dataType: int64
+		formatString: 0
+		lineageTag: f1e91ab5-0613-4f9d-9052-8be8b619ea99
+		summarizeBy: none
+		sourceColumn: nb_points_rapides
+
+		annotation SummarizationSetBy = Automatic
+
+	column ve_par_point
+		dataType: double
+		lineageTag: 3e53a673-d210-494c-8e98-5d29d9e38065
+		summarizeBy: none
+		sourceColumn: ve_par_point
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column points_pour_10k_hab
+		dataType: double
+		lineageTag: 91201404-615d-4eef-a5c2-e4f201a8b1e9
+		summarizeBy: none
+		sourceColumn: points_pour_10k_hab
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column part_points_rapides
+		dataType: double
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 53ce533e-c59f-464f-bc52-7614360b313a
+		summarizeBy: none
+		sourceColumn: part_points_rapides
+
+		annotation SummarizationSetBy = Automatic
+
+	column rang_tension
+		dataType: int64
+		formatString: 0
+		lineageTag: e392f84c-6590-463d-91bc-4ed871ca4475
+		summarizeBy: none
+		sourceColumn: rang_tension
+
+		annotation SummarizationSetBy = Automatic
+
+	partition v_tension_departement_corrigee = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    v_tension_departement_corrigee_View = mart_Schema{[Name="v_tension_departement_corrigee",Kind="View"]}[Data]
+				in
+				    v_tension_departement_corrigee_View
+
+	annotation PBI_ResultType = Table
+

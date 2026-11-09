@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "recharge-ve-france"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "27c1925c-ded0-4dda-9d06-4db26eca59a9"
+  }
+}

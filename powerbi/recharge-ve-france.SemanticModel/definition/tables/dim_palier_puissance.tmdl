@@ -1,0 +1,65 @@
+table dim_palier_puissance
+	lineageTag: c268f8e6-c234-4f2b-b532-321d40e40376
+
+	column ordre
+		dataType: int64
+		formatString: 0
+		lineageTag: 57591554-8ea0-4cb9-a64d-511ee3a5bc7c
+		summarizeBy: none
+		sourceColumn: ordre
+
+		annotation SummarizationSetBy = Automatic
+
+	column palier_puissance
+		dataType: string
+		lineageTag: 7cbb0b71-c14e-4c28-b701-dfc88ceb5426
+		summarizeBy: none
+		sourceColumn: palier_puissance
+		sortByColumn: ordre
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column kw_min
+		dataType: double
+		lineageTag: 61d8a9ad-6aaf-4942-908d-e9125579600c
+		summarizeBy: none
+		sourceColumn: kw_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column kw_max
+		dataType: double
+		lineageTag: 30d5ffe5-bb5f-42a9-a3ad-306f61521280
+		summarizeBy: none
+		sourceColumn: kw_max
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column est_recharge_rapide
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b0329c33-aa4e-4f03-82a3-70e2848716cf
+		summarizeBy: none
+		sourceColumn: est_recharge_rapide
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_palier_puissance = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"recharge-ve-france_Database" = Source{[Name="recharge-ve-france",Kind="Database"]}[Data],
+				    mart_Schema = #"recharge-ve-france_Database"{[Name="mart",Kind="Schema"]}[Data],
+				    dim_palier_puissance_Table = mart_Schema{[Name="dim_palier_puissance",Kind="Table"]}[Data]
+				in
+				    dim_palier_puissance_Table
+
+	annotation PBI_ResultType = Table
+
