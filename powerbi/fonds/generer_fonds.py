@@ -162,7 +162,7 @@ POSITIONS["3 · Déserts de recharge"] = [
 etapes = [("fichier", "Open data", "Bornes IRVE · immatriculations<br>par commune · référentiel INSEE"),
           ("code", "Python", "Nettoyage, rattachement GPS,<br>rapport de qualité"),
           ("base", "BigQuery", "Modèle en étoile,<br>vues SQL corrigées"),
-          ("graphique", "Power BI", "Mesures DAX,<br>4 pages d'analyse")]
+          ("graphique", "Power BI", "Mesures DAX,<br>5 pages d'analyse")]
 corps4 = '<div class="abs" style="left:32px;top:96px;font-size:12px;font-weight:700;color:#5B6676;letter-spacing:0.6px">CHAÎNE DE TRAITEMENT</div>'
 for i, (ico, t, d) in enumerate(etapes):
     x = 32 + i * 308

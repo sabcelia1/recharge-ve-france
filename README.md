@@ -2,7 +2,7 @@
 
 > Analyse de l'adéquation entre le parc de voitures électriques et l'infrastructure de recharge publique, à l'échelle des communes et des départements français.
 
-**Statut :** 🚧 en cours — semaine 3/4 (dashboard Power BI)
+**Statut :** ✅ terminé — pipeline, modèle BigQuery, dashboard Power BI (5 pages) et recommandations
 
 ---
 
@@ -11,15 +11,16 @@
 ![Vue d'ensemble](docs/captures/1_vue_ensemble.png)
 
 <details>
-<summary><b>Voir les autres pages</b> : classement corrigé, déserts de recharge, méthode</summary>
+<summary><b>Voir les autres pages</b> : classement corrigé, déserts de recharge, opportunités d'implantation, méthode</summary>
 
 ![Classement corrigé des départements](docs/captures/2_classement_corrige.png)
 ![Les déserts de recharge](docs/captures/3_deserts_recharge.png)
+![Opportunités d'implantation](docs/captures/5_opportunites.png)
 ![Méthode et limites](docs/captures/4_methode_limites.png)
 
 </details>
 
-Rapport Power BI connecté à BigQuery : 4 pages, mesures DAX, thème et fonds de page sur mesure (dossier [`powerbi/`](powerbi/)).
+Rapport Power BI connecté à BigQuery : 5 pages, mesures DAX, thème et fonds de page sur mesure (dossier [`powerbi/`](powerbi/)).
 
 ## 🎯 Problématique
 
@@ -136,8 +137,9 @@ jupyter notebook notebooks/01_exploration.ipynb
 
 - [x] **Semaine 1** — Ingestion, nettoyage, rapport qualité, exploration
 - [x] **Semaine 2** — Modèle en étoile BigQuery, vues d'analyse SQL
-- [ ] **Semaine 3** — Dashboard Power BI (.pbip) et version Looker Studio
-- [ ] **Semaine 4** — Conclusions, captures, publication
+- [x] **Semaine 3** — Dashboard Power BI connecté à BigQuery (thème, fonds de page, mesures DAX)
+- [x] **Semaine 4** — Opportunités d'implantation chiffrées, captures, publication
+- [ ] Extension possible — croiser avec les revenus et le type de logement (INSEE), version Looker Studio partageable par lien
 
 ## 🛠️ Stack
 
