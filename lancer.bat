@@ -27,6 +27,7 @@ exit /b 0
 
 :erreur
 echo.
-echo *** Une erreur s'est produite : copiez tout le texte ci-dessus et envoyez-le a Claude.
+echo *** Une erreur s'est produite. Copiez tout le texte ci-dessus et signalez-le a l'auteure du projet,
+echo     Celia Monga : https://github.com/sabcelia1/recharge-ve-france/issues
 pause
 exit /b 1
